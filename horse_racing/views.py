@@ -1,7 +1,6 @@
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.views import View
-import pyrebase
 
 from .models import Registration
 from django.shortcuts import render, redirect
