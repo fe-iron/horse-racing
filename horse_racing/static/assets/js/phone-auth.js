@@ -8,23 +8,27 @@ var config = {
     "measurementId": "G-HC4JTP0D9N",
     "databaseURL": ""
 }
+
 firebase.initializeApp(config);
 
 window.onload = function(){
     render();
+    document.getElementById('otp-input-block').style.display = 'none';
+    document.getElementById('signup-btn').style.display = 'none';
 };
 function render(){
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
         'size': 'invisible',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        onSignInSubmit();
-      }
+        'callback': (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            onSignInSubmit();
+        }
     });
 }
 
 function phoneAuth(){
     var number = document.getElementById('mob').value;
+    number = '+91'+number;
 
     firebase.auth().signInWithPhoneNumber(number, recaptchaVerifier)
     .then((confirmationResult) => {
@@ -37,7 +41,7 @@ function phoneAuth(){
     }).catch((error) => {
       // Error; SMS not sent
       // ...
-      alert("some thing went wrong ");
+      document.getElementById('msg').innerHTML = "Enter only 10 digit Number without +91";
       console.log(error);
     });
 }
@@ -48,12 +52,20 @@ function codeVerify(){
     .then((result) => {
       // User signed in successfully.
       const user = result.user;
-      alert("successfully verified!!")
-      console.log(user);
+      document.forms['register'].submit();
     }).catch((error) => {
       // User couldn't sign in (bad verification code?)
       // ...
-      alert("something went wrong at verification");
-      console.log(error)
+      document.getElementById('msg').innerHTML = "Something went wrong! Try again";
     });
+}
+
+function enable(){
+    document.getElementById('otp-input-block').style.display = 'block';
+    document.getElementById('get-otp').disabled = false;
+}
+
+function enable_signup(){
+    document.getElementById('get-otp').disabled = true;
+    document.getElementById('signup-btn').style.display = "block";
 }

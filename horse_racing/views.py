@@ -69,6 +69,8 @@ def signup(request):
 
             new_user = User.objects.create_user(username=mob, password=password, first_name=name)
 
+            reg = Registration(referral=referral, phone_number=mob, full_name=name, user=new_user)
+            reg.save()
             # backend argument required cause we are making the ability to LOGIN by email.
             # Remember, I only extended the User model.
             auth.login(request, new_user)
