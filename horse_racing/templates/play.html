@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_body %}
+	<!-- Breadcrumb Area Start -->
+	<section class="breadcrumb-area play">
+		<img class="bc-img" src="{% static 'assets/images/breadcrumb/play.png' %}" alt="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h4 class="title">
+						Play
+					</h4>
+					<ul class="breadcrumb-list">
+						<li>
+							<a href="/">
+									<i class="fas fa-home"></i>
+									Home
+							</a>
+						</li>
+						<li>
+							<span><i class="fas fa-chevron-right"></i> </span>
+						</li>
+						<li>
+							<a href="play">Play</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Breadcrumb Area End -->
+
+	<!-- Play Games Area Start -->
+	<section class="play-games">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="gaming-activities">
+							<div class="gaming-activities-inner">
+								<div class="row">
+									<div class="col-lg-4 col-md-6">
+										<div class="single-activities">
+											<div class="top-area">
+												<div class="left">
+													<div class="icon">
+														<img src="{% static 'assets/images/play/icon1.png' %}" alt="">
+														<span>
+															4.5 <i class="fas fa-star"></i>
+														</span>
+													</div>
+												</div>
+												<div class="right">
+													<h4 class="title">
+														 DICE
+													</h4>
+													<p class="text">
+														Roll the Dice(Coming Soon)
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-activities">
+											<div class="top-area">
+												<div class="left">
+													<div class="icon">
+														<img src="{% static 'assets/images/game/horse.gif' %}" alt="">
+														<span>
+															4.5 <i class="fas fa-star"></i>
+														</span>
+													</div>
+												</div>
+												<div class="right">
+													<h4 class="title">
+														Horse Racing
+													</h4>
+													<p class="text">
+														Play Now
+													</p>
+												</div>
+											</div>
+											<div class="bottom-area">
+												<h4 class="title">People Playing:</h4>
+												<div class="players-count">
+													<ul class="players-list">
+														<li>
+															<img src="{% static 'assets/images/play/people.png' %}" alt="">
+														</li>
+														<li>
+															<img src="{% static 'assets/images/play/people.png' %}" alt="">
+														</li>
+														<li>
+															<img src="{% static 'assets/images/play/people.png' %}" alt="">
+														</li>
+														<li>
+															<img src="{% static 'assets/images/play/people.png' %}" alt="">
+														</li>
+													</ul>
+													<div class="count-num">
+														40+
+													</div>
+												</div>
+												<div class="pp">
+													<p>50 People Playing</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-activities">
+											<div class="top-area">
+												<div class="left">
+													<div class="icon">
+														<img src="{% static 'assets/images/play/icon3.png' %}" alt="">
+														<span>
+															4.5 <i class="fas fa-star"></i>
+														</span>
+													</div>
+												</div>
+												<div class="right">
+													<h4 class="title">
+														Lottery
+													</h4>
+													<p class="text">
+														Try Your Luck (Coming Soon)
+													</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="all-games">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12 text-center">
+							<ul class="nav" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="pills-tab1-tab" data-toggle="pill" href="#pills-tab1" role="tab" aria-controls="pills-tab1" aria-selected="true">
+									<div class="icon">
+										<img class="one" src="{% static 'assets/images/play/ic6.png' %}" alt="">
+										<img class="two" src="{% static 'assets/images/play/ic66.png' %}" alt="">
+									</div>
+									<span>Top Games</span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="pills-tab2-tab" data-toggle="pill" href="#pills-tab2" role="tab" aria-controls="pills-tab2" aria-selected="false">
+								<div class="icon">
+									<img class="one" src="{% static 'assets/images/play/ic1.png' %}" alt="">
+									<img class="two" src="{% static 'assets/images/play/ic11.png' %}" alt="">
+								</div>
+								<span>New</span>
+								</a>
+							</li>
+							</ul>
+							<div class="tab-content" id="pills-tabContent">
+							<div class="tab-pane fade show active" id="pills-tab1" role="tabpanel" aria-labelledby="pills-tab1-tab">
+								<div class="row">
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/icon1.png' %}" alt="">
+											<a href="#" class="mybtn2">Coming Soon !</a>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/horse.png' %}" alt="">
+											<a href="tournaments" class="mybtn2">PLay NoW !</a>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/icon3.png' %}" alt="">
+											<a href="#" class="mybtn2">Coming Soon !</a>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-lg-12 text-center">
+										<a href="#" class="mybtn1">View More</a>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade" id="pills-tab2" role="tabpanel" aria-labelledby="pills-tab2-tab">
+								<div class="row">
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/icon1.png' %}" alt="">
+											<a href="#" class="mybtn2">Coming Soon !</a>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/horse.png' %}" alt="">
+											<a href="#" class="mybtn2">PLay NoW !</a>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-game">
+											<img src="{% static 'assets/images/game/icon3.png' %}" alt="">
+											<a href="#" class="mybtn2">Coming Soon !</a>
+										</div>
+									</div>
+								<div class="row">
+									<div class="col-lg-12 text-center">
+										<a href="#" class="mybtn1">View More</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+	<!-- Play Games Area End -->
+		
+	<!-- Recent Winners Area Start -->
+	<section class="recent-winners">
+		<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10">
+						<div class="section-heading">
+							<h5 class="subtitle">
+								Try to Check out our
+							</h5>
+							<h2 class="title">
+									Recent Winners
+							</h2>
+							<p class="text">
+								We update our site regularly; more and more winners are added every day! To locate the most recent winner's information
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-4">
+						<div class="single-winer">
+							<div class="top-area">
+								<div class="left">
+									<h4 class="name">
+											Leroy Roy 
+									</h4>
+									<p class="date">
+											01.03.2021
+									</p>
+								</div>
+								<div class="right">
+									<p class="id">#5747e75482</p>
+								</div>
+							</div>
+							<div class="bottom-area">
+								<div class="left">
+										INR 980
+								</div>
+								<div class="right">
+										<img src="{% static 'assets/images/inr.png' %}" alt="" style="max-width: 50px;">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="single-winer">
+							<div class="top-area">
+								<div class="left">
+									<h4 class="name">
+											Jeff Mack
+									</h4>
+									<p class="date">
+											23.04.2021
+									</p>
+								</div>
+								<div class="right">
+									<p class="id">#5747e75482</p>
+								</div>
+							</div>
+							<div class="bottom-area">
+								<div class="left">
+										INR 800
+								</div>
+								<div class="right">
+									<img src="{% static 'assets/images/inr.png' %}" alt="" style="max-width: 50px;">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="single-winer">
+							<div class="top-area">
+								<div class="left">
+									<h4 class="name">
+											Neal Morris
+									</h4>
+									<p class="date">
+											01.05.2021
+									</p>
+								</div>
+								<div class="right">
+									<p class="id">#5747e75482</p>
+								</div>
+							</div>
+							<div class="bottom-area">
+								<div class="left">
+										INR 500
+								</div>
+								<div class="right">
+									<img src="{% static 'assets/images/inr.png' %}" alt="" style="max-width: 50px;">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 text-xl-center">
+						<a class="mybtn2" href="#">View All </a>
+					</div>
+				</div>
+		</div>
+	</section> 
+	<!-- Recent Winners Area End -->
+{% endblock %}

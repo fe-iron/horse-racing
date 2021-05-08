@@ -1,0 +1,89 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Horse Racing - Betting</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+	<!-- stylesheet -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+</head>
+<body>
+
+  	<!-- Login Area Start -->
+	<div class="modal fade login-modal" id="login1" tabindex="-1" role="dialog" aria-labelledby="login1" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+
+				<div class="modal-body">
+					<div class="logo-area">
+							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+					</div>
+					<div class="header-area">
+						<h4 class="title">Great to have you back!</h4>
+						<p class="sub-title">Enter your details below.</p>
+						{% for msg in messages %}
+						<p class="sub-title" style="color: orangered;">{{msg}}</p>
+						{% endfor %}
+					</div>
+					<div class="form-area">
+						<form action="login"  method="POST">
+							{% csrf_token %}
+							<div class="form-group">
+									<label for="login-input-email">Mobile Number*</label>
+									<input type="tel" class="input-field" name="mob" placeholder="Enter your Mobile Number">
+
+									<label for="login-input-password">Password*</label>
+									<input type="password" class="input-field" name="password"  placeholder="Enter your Password">
+							</div>
+
+							<div class="form-group">
+								   <button type="submit" class="mybtn1">Sign in</button>
+							</div>
+						</form>
+					</div>
+					<div class="form-footer">
+						<p>Not a member?
+								<a href="signup">Create account <i class="fas fa-angle-double-right"></i></a>
+						</p>
+						<p>Forgot Password?
+								<a href="forget">Click me <i class="fas fa-angle-double-right"></i></a>
+						</p>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	<!-- Login Area End -->
+
+
+	<button data-toggle="modal" data-target="#login1"  style="display: none;" id="modal-btn">Show Login</button>
+
+	<!-- jquery -->
+	<script src="{% static 'assets/js/jquery.js' %}"></script>
+
+	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+
+
+	<script>
+			var modal_btn = document.getElementById('modal-btn');
+			modal_btn.click();
+
+			window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
+			  'size': 'invisible',
+			  'callback': (response) => {
+				// reCAPTCHA solved, allow signInWithPhoneNumber.
+				onSignInSubmit();
+			  }
+			});
+	</script>
+</body>
+</html>

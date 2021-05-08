@@ -1,0 +1,104 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Horse Racing - Betting</title>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+	<!-- stylesheet -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+</head>
+<body>
+	<!-- SignIn Area Start -->
+	<div class="modal fade login-modal sign-in" id="signup" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="signup" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered " role="document">
+				<div class="modal-content">
+
+					<div class="modal-body">
+						<div class="logo-area">
+								<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+						</div>
+						<div class="header-area">
+							<h4 class="title">Great to have you back!</h4>
+							<p class="sub-title">Enter your details below.</p>
+							{% for msg in messages %}
+							<p class="sub-title" style="color: orangered;">{{msg}}</p>
+							{% endfor %}
+						</div>
+						<div class="form-area">
+							<form action="signup" method="POST">
+								{% csrf_token %}
+								<div class="form-group">
+										<label for="input-name">Full Name*</label>
+										<input type="text" class="input-field" name="name"  placeholder="Enter your Full Name">
+								</div>
+								<div class="form-group">
+										<label for="input-con-no">Mobile Number*</label>
+										<input type="tel" class="input-field" id="mob" name="mob"  placeholder="Enter your Mobile Number">
+								</div>
+                                <div class="form-group">
+										<label for="input-password">Password*</label>
+										<input type="password" class="input-field" name="password"  placeholder="Enter a strong Password">
+								</div>
+                                <div class="form-group">
+										<label for="input-referral">Referral*</label>
+										<input type="text" class="input-field" name="referral" readonly value="{{referral}}" placeholder="Recommendation Code">
+								</div>
+								<div class="form-group">
+									<div class="check-group">
+											<input type="checkbox" class="check-box-field" id="input-terms" checked>
+											<label for="input-terms">
+													I agree with <a href="terms-conditions">terms and Conditions</a> and  <a href="terms-conditions">privacy policy</a>
+											</label>
+									</div>
+								</div>
+								<div id="recaptcha-container"></div>
+								<div class="form-group">
+									<button type="button" onclick="phoneAuth()" class="mybtn1">Get OTP</button>
+								</div>
+
+								<div class="form-group">
+										<input type="text" class="input-field" id="verificationCode" placeholder="Enter OTP...">
+								</div>
+
+								<div class="form-group">
+									<button type="button" onclick="codeVerify()" class="mybtn1">Sign Up</button>
+								</div>
+
+							</form>
+						</div>
+						<div class="form-footer">
+							<p>Already a member?
+									<a href="login">Login Here <i class="fas fa-angle-double-right"></i></a>
+							</p>
+
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+	<!-- SignIn Area End -->
+
+
+	<button data-toggle="modal" data-target="#signup"  style="display: none;" id="modal-btn">Show Login</button>
+
+	<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+	<!-- jquery -->
+	<script src="{% static 'assets/js/jquery.js' %}"></script>
+
+	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'assets/js/phone-auth.js' %}"></script>
+
+	<script>
+			var modal_btn = document.getElementById('modal-btn');
+			modal_btn.click();
+	</script>
+</body>
+</html>

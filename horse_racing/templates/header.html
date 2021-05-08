@@ -1,0 +1,126 @@
+{% load static %}
+    <!-- preloader area start -->
+	<div class="preloader" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+	<!-- preloader area end -->
+
+   	<!-- Header Area Start  -->
+	<header class="header">
+		<!-- Top Header Area Start -->
+		<section class="top-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="content">
+							<div class="left-content">
+								<ul class="left-list">
+									<li>
+										<p>
+											<i class="fas fa-headset"></i>	Support
+										</p>
+									</li>
+									<li>
+										<p>
+											<i class="fas fa-envelope"></i>	info@horse-racing.com
+										</p>
+									</li>
+									<li>
+										<div class="language-selector">
+											<select name="language" class="language">
+												<option value="1">English</option>
+												<!-- <option value="2">France</option>
+												<option value="3">Japan</option> -->
+											</select>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="right-content">
+								<ul class="right-list">
+									<li>
+										{% if user.is_authenticated %}
+										<a class="sign-in">
+											<i class="fas fa-user"></i> Hii, {{user.first_name}}
+										{% else %}
+										<a href="login" class="sign-in">
+											<i class="fas fa-user"></i> Sign In
+										{% endif %}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Top Header Area End -->
+		<!--Main-Menu Area Start-->
+		<div class="mainmenu-area">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<nav class="navbar navbar-expand-lg navbar-light">
+							<a class="navbar-brand" href="/">
+								<img src="{% static 'assets/images/logo.png' %}" alt="">
+							</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_menu" aria-controls="main_menu"
+								aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse fixed-height" id="main_menu">
+								<ul class="navbar-nav ml-auto">
+									<li class="nav-item dropdown">
+										<a class="nav-link active" href="/"  role="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											Home
+										<div class="mr-hover-effect"></div>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="play">Play
+												<div class="mr-hover-effect"></div></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="lottery">lottery <small>beta</small>
+												<div class="mr-hover-effect"></div></a>
+									</li>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											Other
+											<div class="mr-hover-effect"></div>
+										</a>
+										<ul class="dropdown-menu" >
+											<li><a class="dropdown-item" href="notfound"> <i class="fa fa-angle-double-right"></i>About</a></li>
+											<li><a class="dropdown-item" href="affiliate"> <i class="fa fa-angle-double-right"></i>Affiliate</a></li>
+											<li><a class="dropdown-item" href="faq"> <i class="fa fa-angle-double-right"></i>Faq</a></li>
+											<li><a class="dropdown-item" href="how-it-work"> <i class="fa fa-angle-double-right"></i>How It Work</a></li>
+											<li><a class="dropdown-item" href="terms-conditions"> <i class="fa fa-angle-double-right"></i>Terms & Condition</a></li>
+											<li><a class="dropdown-item" href="terms-conditions-details"> <i class="fa fa-angle-double-right"></i>Condition Details</a></li>
+										</ul>
+									</li>
+									<li class="nav-item">
+											<a class="nav-link" href="contact">Contact
+												<div class="mr-hover-effect"></div>
+											</a>
+									</li>
+								</ul>
+								{% if user.is_authenticated %}
+								<a href="logout" class="mybtn1"> Logout</a>
+								{% else %}
+								<a href="signup" class="mybtn1"> Join us</a>
+								{% endif %}
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Main-Menu Area Start-->
+	</header>
+	<!-- Header Area End  -->

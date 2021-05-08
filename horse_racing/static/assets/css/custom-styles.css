@@ -1,0 +1,64 @@
+.horse-1 {
+  background-color: #070b28;
+  border-bottom: 1px solid #bbb;
+
+}
+.horse-2 {
+  background-color: #070b28;
+  border-bottom: 1px solid #bbb;
+}
+.horse-3 {
+  background-color: #070b28;
+  border-bottom: 1px solid #bbbbbb;
+}
+
+.horse-1 .horse-gif {
+  position: relative;
+}
+
+.animation1 {
+  animation: run 35s linear forwards;
+}
+
+.animation2 {
+  animation: run 40s linear forwards;
+}
+
+.animation3 {
+  animation: run 30s linear forwards;
+}
+
+.horse-2 .horse-gif {
+  position: relative;
+}
+
+.horse-3 .horse-gif {
+  position: relative;
+}
+
+.horse-2 img {
+  filter: hue-rotate(180deg)
+}
+
+.horse-3 img {
+  filter:saturate(1.5);
+}
+
+@keyframes run {
+  0% {
+    left: 0px;
+  }
+
+  100% {
+    left: 91%;
+  }
+}
+
+.racing-section::before{
+  content: "";
+  width: 2px;
+  height: 100%;
+  position: absolute;
+  background: #fff;
+  right: 7%;
+}

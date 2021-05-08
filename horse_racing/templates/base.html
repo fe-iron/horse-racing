@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Horse Racing - Betting</title>
+	<!-- favicon -->
+	<link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<!-- Plugin css -->
+	<link rel="stylesheet" href="{% static 'assets/css/plugin.css' %}">
+
+	<!-- stylesheet -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	{% block link %} {% endblock %}
+</head>
+<body>
+	{% include 'header.html' %}
+
+	{% block main_body %}
+	{% endblock %}
+
+	{% include 'footer.html' %}
+
+
+	<!-- jquery -->
+	<script src="{% static 'assets/js/jquery.js' %}"></script>
+	<!-- popper -->
+	<script src="{% static 'assets/js/popper.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<!-- plugin js-->
+	<script src="{% static 'assets/js/plugin.js' %}"></script>
+
+	<!-- MpusemoverParallax JS-->
+	<script src="{% static 'assets/js/TweenMax.js' %}"></script>
+	<script src="{% static 'assets/js/mousemoveparallax.js' %}"></script>
+	<!-- main -->
+	<script src="{% static 'assets/js/main.js' %}"></script>
+	{% block jslink %}{% endblock %}
+</body>
+</html>
