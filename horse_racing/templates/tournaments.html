@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block link %}
+<link rel="stylesheet" href="{% static 'assets/css/custom-styles.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/countdown.css' %}">
 {% endblock %}
 
@@ -69,8 +70,12 @@
 	<!-- Tournaments Area End -->
 
 {% block jslink %}
-	<script src="assets/js/countdown.js"></script>
-	<script src="assets/js/celebrate.js"></script>
+<script>
+	var horse_image = '{% static "assets/images/game/stopped-horse.png" %}';
+		var horse_gif = '{% static "assets/images/game/horse.gif" %}';
+</script>
+	<script src="{% static 'assets/js/countdown.js' %}"></script>
+	<script src="{% static 'assets/js/celebrate.js' %}"></script>
 
 	<script type="text/javascript">
 		var clock = $('.clock').FlipClock(99000 * 24 * 3, {
@@ -83,6 +88,7 @@
 			countdown: true,
 			showSeconds: false
 		});
+
 	</script>
 {% endblock %}
 

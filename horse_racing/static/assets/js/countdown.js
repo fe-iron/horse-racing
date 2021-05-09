@@ -9,7 +9,7 @@ const horses = document.querySelectorAll('.horse-gif')
 
 horses.forEach((horse, i) => {
   horse.addEventListener('animationend', (e) => {
-    horseImages[i].src = 'assets/images/game/stopped-horse.png'
+    horseImages[i].src = horse_image;
     document.getElementById('confetti').style.display='block';
   })
 })
@@ -18,7 +18,7 @@ setTimeout(() => {
   countdown.style.opacity = '0'
 
   horseImages.forEach((horseImage, i) => {
-    horseImage.src = 'assets/images/game/horse.gif'
+    horseImage.src = horse_gif;
     horses[i].classList.add(`animation${i+1}`)
   })
 }, 10000)

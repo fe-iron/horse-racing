@@ -79,6 +79,13 @@ def signup(request):
         return render(request, "signup.html", {"referral": "DEFAULT000"})
 
 
+def join(request, referral):
+    return render(request, "signup.html", {"referral": referral})
+
+
+def referral(request):
+    pass
+
 def login(request):
     if request.method == 'POST':
         mob = request.POST.get('mob', None)
