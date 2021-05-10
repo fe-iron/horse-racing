@@ -7,10 +7,13 @@
 
 {% block main_body %}
 
+
+
 	<!-- Breadcrumb Area Start -->
 	<section class="breadcrumb-area bc-tournaments">
 		<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
 		<div class="container">
+			<marquee behavior="" direction="left">Withdrawal notice: SBI bank payment is delayed, please try not to use the bank to withdraw money.</marquee>
 			<div class="row">
 				<div class="col-lg-12">
 					<h4 class="title">
@@ -43,6 +46,22 @@
 	<!-- Breadcrumb Area End -->
 
 
+	<!-- Race Numbeter and Balance Section Start  -->
+
+	<section class="balance-and-race-no">
+		<div class="race-no">
+			<h3>Race Number</h3>
+			<h4>20210511292</h4>
+		</div>
+		<div class="balance">
+			<h3>Available Balance</h3>
+			<h4>&#8377 108</h4>
+		</div>
+	</section>
+
+	<!-- Race Numbeter and Balance Section End  -->
+
+
 	<!-- Tournaments Area Start -->
 	<div class="racing-section">
 		<div class="countdown">
@@ -68,6 +87,24 @@
 		<canvas id="confetti" style="display: none; position: absolute; top: 0"></canvas>
 	</div>
 	<!-- Tournaments Area End -->
+
+
+	<!-- Join buttons Start  -->
+
+	<section class="balance-and-race-no buttons">
+		<div class="race-no">
+			<button class='mybtn1 green'>Join Brick Red</button>
+		</div>
+		<div class="balance">
+			<button class='mybtn1 violet'>Join Violet</button>
+		</div>
+		<div class="balance">
+			<button class='mybtn1 red'>Join Red</button>
+		</div>
+	</section>
+
+	<!-- Join buttons End  -->
+
 
 {% block jslink %}
 <script>
