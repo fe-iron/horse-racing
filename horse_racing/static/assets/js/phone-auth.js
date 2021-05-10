@@ -10,7 +10,7 @@ var config = {
   }
   
   
-console.log('Anurag'); 
+//console.log('Anurag');
 firebase.initializeApp(config)
 
 window.onload = function () {

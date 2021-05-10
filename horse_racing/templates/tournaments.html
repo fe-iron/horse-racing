@@ -7,13 +7,11 @@
 
 {% block main_body %}
 
-
-
 	<!-- Breadcrumb Area Start -->
 	<section class="breadcrumb-area bc-tournaments">
 		<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
 		<div class="container">
-			<marquee behavior="" direction="left">Withdrawal notice: SBI bank payment is delayed, please try not to use the bank to withdraw money.</marquee>
+			<marquee behavior="" direction="left">All of the winning amount will be transferred to your saved account everyday at 23:00</marquee>
 			<div class="row">
 				<div class="col-lg-12">
 					<h4 class="title">
@@ -46,17 +44,19 @@
 	<!-- Breadcrumb Area End -->
 
 
-	<!-- Race Numbeter and Balance Section Start  -->
+	<!-- Race Number and Balance Section Start  -->
 
 	<section class="balance-and-race-no">
 		<div class="race-no">
 			<h3>Race Number</h3>
 			<h4>20210511292</h4>
 		</div>
+		{% if user.is_authenticated %}
 		<div class="balance">
 			<h3>Available Balance</h3>
 			<h4>&#8377 108</h4>
 		</div>
+		{% endif %}
 	</section>
 
 	<!-- Race Numbeter and Balance Section End  -->
@@ -90,25 +90,175 @@
 
 
 	<!-- Join buttons Start  -->
-
+	{% if user.is_authenticated %}
 	<section class="balance-and-race-no buttons">
 		<div class="race-no">
-			<button class='mybtn1 green'>Join Brick Red</button>
+			<a href=""><button class='mybtn1 green'>Join Brick Red</button></a>
 		</div>
 		<div class="balance">
-			<button class='mybtn1 violet'>Join Violet</button>
+			<a href=""><button class='mybtn1 violet'>Join Violet</button></a>
 		</div>
 		<div class="balance">
-			<button class='mybtn1 red'>Join Red</button>
+			<a href=""><button class='mybtn1 red'>Join Red</button></a>
 		</div>
 	</section>
+	{% else %}
+	<section class="balance-and-race-no buttons">
+		<div class="race-no">
+			<a href="login"><button class='mybtn1 green'>Join Brick Red</button></a>
+		</div>
+		<div class="balance">
+			<a href="login"><button class='mybtn1 violet'>Join Violet</button></a>
+		</div>
+		<div class="balance">
+			<a href="login"><button class='mybtn1 red'>Join Red</button></a>
+		</div>
+	</section>
+	{% endif %}
 
 	<!-- Join buttons End  -->
 
 
+	<!-- Latest Activities Area Start -->
+	 <section class="activities">
+		 <img class="shape shape1" src="{% static 'assets/images/people/shape1.png' %}" alt="">
+		 <img class="shape shape2" src="{% static 'assets/images/people/shape2.png' %}" alt="">
+		 <img class="shape shape3" src="{% static 'assets/images/people/shape3.png' %}" alt="">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-10">
+					<div class="section-heading">
+						<h5 class="subtitle">
+							The Smarter Way
+						</h5>
+						<h2 class="title">
+							Play and Earn
+						</h2>
+						<p class="text">
+							The World's First real money earning game
+							Affordable and competitive betting rates
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="tab-menu-area">
+						<ul class="nav nav-lend mb-3" id="pills-tab" role="tablist">
+							<!-- <li class="nav-item">
+								<a class="nav-link active" id="pills-all-bets-tab" data-toggle="pill" href="#pills-all-bets" role="tab" aria-controls="pills-all-bets" aria-selected="true">All bets</a>
+							</li> -->
+							<li class="nav-item active">
+								<a class="nav-link active" id="pills-my-bets-tab" data-toggle="pill" href="#pills-my-bets" role="tab" aria-controls="pills-my-bets" aria-selected="false">All bets</a>
+							</li>
+							<!-- <li class="nav-item">
+								<a class="nav-link" id="pills-my-jackpots-tab" data-toggle="pill" href="#pills-my-jackpots" role="tab" aria-controls="pills-my-jackpots" aria-selected="false">jackpots</a>
+							</li> -->
+						</ul>
+					</div>
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-all-bets" role="tabpanel" aria-labelledby="pills-all-bets-tab">
+							<div class="responsive-table">
+								<table class="table">
+								<thead>
+									<tr>
+									<th scope="col">USER</th>
+									<th scope="col">BET ID</th>
+									<th scope="col">BET AMOUNT</th>
+									<th scope="col">CHANCE</th>
+									<th scope="col">GAME</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<img src="{% static 'assets/images/people/p1.png' %}" alt="">
+											Tom Bass
+										</td>
+										<td>
+											b799b8724b
+										</td>
+										<td>
+											<img src="{% static 'assets/images/inr.png' %}" alt="">
+											10
+										</td>
+										<td>70%</td>
+										<td>Horse Racing</td>
+									</tr>
+									<tr>
+										<td>
+											<img src="{% static 'assets/images/people/p2.png' %}" alt="">
+											Tom
+										</td>
+										<td>
+											b799b8724b
+										</td>
+										<td>
+											<img src="{% static 'assets/images/inr.png' %}" alt="">
+											20
+										</td>
+										<td>70%</td>
+										<td>Horse Racing</td>
+									</tr>
+									<tr>
+										<td>
+											<img src="{% static 'assets/images/people/p3.png' %}" alt="">
+											Hardy
+										</td>
+										<td>
+											b799b8724b
+										</td>
+										<td>
+											<img src="{% static 'assets/images/inr.png' %}" alt="">
+											10
+										</td>
+										<td>80%</td>
+										<td>Horse Racing</td>
+									</tr>
+									<tr>
+										<td>
+											<img src="{% static 'assets/images/people/p4.png' %}" alt="">
+											Tom Hanky
+										</td>
+										<td>
+											b799b8724b
+										</td>
+										<td>
+											<img src="{% static 'assets/images/inr.png' %}" alt="">
+											30
+										</td>
+										<td>90%</td>
+										<td>Horse Racing</td>
+									</tr>
+									<tr>
+										<td>
+											<img src="{% static 'assets/images/people/p5.png' %}" alt="">
+											Tom Bass
+										</td>
+										<td>
+											b799b8724b
+										</td>
+										<td>
+											<img src="{% static 'assets/images/inr.png' %}" alt="">
+											10
+										</td>
+										<td>60%</td>
+										<td>Horse Racing</td>
+									</tr>
+								</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Latest Activities Area End -->
+
 {% block jslink %}
 <script>
-	var horse_image = '{% static "assets/images/game/stopped-horse.png" %}';
+		var horse_image = '{% static "assets/images/game/stopped-horse.png" %}';
 		var horse_gif = '{% static "assets/images/game/horse.gif" %}';
 </script>
 	<script src="{% static 'assets/js/countdown.js' %}"></script>
