@@ -50,23 +50,23 @@
 								</div>
 								<div class="form-group">
 										<label for="input-con-no">Mobile Number*</label>
-										<input type="tel" class="input-field" id="mob" name="mob" onchange="enable()"
+										<input type="tel" class="input-field" id="mob" name="mob"
 											   placeholder="Enter your Mobile Number (without +91)" required
 											   title="Enter only 10 digit number"
 										>
 								</div>
-								<div id="recaptcha-container"></div>
 								<div class="form-group">
-									<button type="button" onclick="phoneAuth()" id="get-otp" disabled class="mybtn1">Get OTP</button>
+									<button type="button" onclick="phoneAuth()" id="get-otp" class="mybtn1">Get OTP</button>
 								</div>
 
 								<div class="form-group" id="otp-input-block">
-										<input type="text" class="input-field" onchange="enable_signup()" id="verificationCode" placeholder="Enter OTP...">
+										<input type="text" class="input-field" id="verificationCode" placeholder="Enter OTP..." required>
 								</div>
 
 								<div class="form-group">
 									<button type="button" onclick="codeVerify()" class="mybtn1" id="signup-btn">Sign Up</button>
 								</div>
+								<div id="recaptcha-container"></div>
 								<div class="form-group">
 									<div class="check-group">
 											<input type="checkbox" class="check-box-field" id="input-terms" checked>

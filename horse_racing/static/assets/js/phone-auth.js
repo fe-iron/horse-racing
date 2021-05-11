@@ -32,27 +32,35 @@ function render() {
 }
 
 function phoneAuth() {
-  var number = document.getElementById('mob').value
+  var number = document.getElementById('mob').value;
+  if(number.length < 10 || number.length > 10){
+    alert("Mobile Number should be 10 digits long!");
+  }
   number = '+91' + number
-
-  firebase
-    .auth()
-    .signInWithPhoneNumber(number, recaptchaVerifier)
-    .then((confirmationResult) => {
-      // SMS sent. Prompt user to type the code from the message, then sign the
-      // user in with confirmationResult.confirm(code).
-      window.confirmationResult = confirmationResult
-      codeResult = confirmationResult
-      console.log(codeResult)
-      alert('message sent check your phone!')
-    })
-    .catch((error) => {
-      // Error; SMS not sent
-      // ...
-      document.getElementById('msg').innerHTML =
-        'Enter only 10 digit Number without +91'
-      console.log(error)
-    })
+  if(number == '+91'){
+    alert("Enter Mobile Number first!");
+  }else{
+      document.getElementById('otp-input-block').style.display = 'block';
+      document.getElementById('signup-btn').style.display = 'block'
+      firebase
+        .auth()
+        .signInWithPhoneNumber(number, recaptchaVerifier)
+        .then((confirmationResult) => {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          window.confirmationResult = confirmationResult
+          codeResult = confirmationResult
+          console.log(codeResult)
+          alert('message sent check your phone!')
+        })
+        .catch((error) => {
+          // Error; SMS not sent
+          // ...
+          document.getElementById('msg').innerHTML =
+            'Enter only 10 digit Number without +91'
+          console.log(error)
+        })
+      }
 }
 
 function codeVerify() {
@@ -70,14 +78,4 @@ function codeVerify() {
       document.getElementById('msg').innerHTML =
         'Something went wrong! Try again'
     })
-}
-
-function enable() {
-  document.getElementById('otp-input-block').style.display = 'block'
-  document.getElementById('get-otp').disabled = false
-}
-
-function enable_signup() {
-  document.getElementById('get-otp').disabled = true
-  document.getElementById('signup-btn').style.display = 'block'
 }
