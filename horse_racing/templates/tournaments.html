@@ -68,6 +68,33 @@
 <!-- Race Numbeter and Balance Section End  -->
 
 
+<!-- Join buttons Start  -->
+{% if user.is_authenticated %}
+<section class="balance-and-race-no buttons">
+	<div class="race-no">
+		<a href=""><button class='mybtn1 green'>Join Brick Red</button></a>
+	</div>
+	<div class="balance">
+		<a href=""><button class='mybtn1 violet'>Join Violet</button></a>
+	</div>
+	<div class="balance">
+		<a href=""><button class='mybtn1 red'>Join Red</button></a>
+	</div>
+</section>
+{% else %}
+<section class="balance-and-race-no buttons">
+	<div class="race-no">
+		<a href="login"><button class='mybtn1 green'>Join Brick Red</button></a>
+	</div>
+	<div class="balance">
+		<a href="login"><button class='mybtn1 violet'>Join Violet</button></a>
+	</div>
+	<div class="balance">
+		<a href="login"><button class='mybtn1 red'>Join Red</button></a>
+	</div>
+</section>
+{% endif %}
+
 
 <!-- Tournaments Area Start -->
 <div class="racing-section">
@@ -95,33 +122,6 @@
 </div>
 <!-- Tournaments Area End -->
 
-
-<!-- Join buttons Start  -->
-{% if user.is_authenticated %}
-<section class="balance-and-race-no buttons">
-	<div class="race-no">
-		<a href=""><button class='mybtn1 green'>Join Brick Red</button></a>
-	</div>
-	<div class="balance">
-		<a href=""><button class='mybtn1 violet'>Join Violet</button></a>
-	</div>
-	<div class="balance">
-		<a href=""><button class='mybtn1 red'>Join Red</button></a>
-	</div>
-</section>
-{% else %}
-<section class="balance-and-race-no buttons">
-	<div class="race-no">
-		<a href="login"><button class='mybtn1 green'>Join Brick Red</button></a>
-	</div>
-	<div class="balance">
-		<a href="login"><button class='mybtn1 violet'>Join Violet</button></a>
-	</div>
-	<div class="balance">
-		<a href="login"><button class='mybtn1 red'>Join Red</button></a>
-	</div>
-</section>
-{% endif %}
 
 <!-- Join buttons End  -->
 
