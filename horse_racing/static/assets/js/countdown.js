@@ -1,16 +1,22 @@
 // Credit: Mateusz Rybczonec
 
 const FULL_DASH_ARRAY = 283
-const WARNING_THRESHOLD = 7
-const ALERT_THRESHOLD = 4
+const WARNING_THRESHOLD = 12
+const ALERT_THRESHOLD = 6
 const countdown = document.querySelector('.countdown')
 const horseImages = document.querySelectorAll('.horse-gif img')
 const horses = document.querySelectorAll('.horse-gif')
 
 horses.forEach((horse, i) => {
   horse.addEventListener('animationend', (e) => {
-    horseImages[i].src = horse_image;
-    document.getElementById('confetti').style.display='block';
+    if (i === 2) {
+      document.querySelector('.next-race').style.display = 'block'
+      var fiveMinutes = 20,
+        display = document.querySelector('#time')
+      startTimer(fiveMinutes, display)
+    }
+    horseImages[i].src = horse_image
+    document.getElementById('confetti').style.display = 'block'
   })
 })
 
@@ -18,10 +24,10 @@ setTimeout(() => {
   countdown.style.opacity = '0'
 
   horseImages.forEach((horseImage, i) => {
-    horseImage.src = horse_gif;
-    horses[i].classList.add(`animation${i+1}`)
+    horseImage.src = horse_gif
+    horses[i].classList.add(`animation${i + 1}`)
   })
-}, 10000)
+}, 24000)
 
 const COLOR_CODES = {
   info: {
@@ -37,7 +43,7 @@ const COLOR_CODES = {
   },
 }
 
-const TIME_LIMIT = 10
+const TIME_LIMIT = 24
 let timePassed = 0
 let timeLeft = TIME_LIMIT
 let timerInterval = null
