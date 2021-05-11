@@ -112,5 +112,13 @@
 
 
 .next-race {
-  display: none;
+  background: #070b28;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1em;
+}
+
+.next-race h3 {
+  opacity: 0;
 }

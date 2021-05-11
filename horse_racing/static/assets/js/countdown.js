@@ -1,19 +1,22 @@
 // Credit: Mateusz Rybczonec
 
 const FULL_DASH_ARRAY = 283
-const WARNING_THRESHOLD = 12
-const ALERT_THRESHOLD = 6
+const WARNING_THRESHOLD = 120
+const ALERT_THRESHOLD = 60
 const countdown = document.querySelector('.countdown')
 const horseImages = document.querySelectorAll('.horse-gif img')
 const horses = document.querySelectorAll('.horse-gif')
 
 horses.forEach((horse, i) => {
   horse.addEventListener('animationend', (e) => {
-    if (i === 2) {
-      document.querySelector('.next-race').style.display = 'block'
+    if (i === 1) {
+      document.querySelector('.next-race h3').style.opacity = '1'
       var fiveMinutes = 20,
         display = document.querySelector('#time')
       startTimer(fiveMinutes, display)
+      setTimeout(() => {
+        location.href = 'tournaments'
+      }, 20000)
     }
     horseImages[i].src = horse_image
     document.getElementById('confetti').style.display = 'block'
@@ -27,7 +30,7 @@ setTimeout(() => {
     horseImage.src = horse_gif
     horses[i].classList.add(`animation${i + 1}`)
   })
-}, 24000)
+}, 240000)
 
 const COLOR_CODES = {
   info: {
@@ -43,7 +46,7 @@ const COLOR_CODES = {
   },
 }
 
-const TIME_LIMIT = 24
+const TIME_LIMIT = 240
 let timePassed = 0
 let timeLeft = TIME_LIMIT
 let timerInterval = null
