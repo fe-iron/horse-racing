@@ -6,6 +6,18 @@
     color: green !important;
 }
 
+.color-win{
+    width: 2em;
+    height: 1em;
+    background: green;
+}
+
+.color-lose{
+    width: 2em;
+    height: 1em;
+    background: red;
+}
+
 .horse-1 {
   background-color: #070b28;
   border-bottom: 1px solid #bbb;
@@ -98,6 +110,7 @@
 
 .mybtn1.violet {
   background: #005686;
+  margin: 2em 0;
 }
 
 .mybtn1.red {
@@ -117,6 +130,7 @@
     min-height: 24em;
   }
   .balance-and-race-no, .next-race {
-    font-size: 0.6em;
+    font-size: 0.5em;
+    text-align: center;
   }
 }
