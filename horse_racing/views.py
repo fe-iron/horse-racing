@@ -1,14 +1,13 @@
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.views import View
-
 from .models import Registration
 from django.shortcuts import render, redirect
 
 
 # Create your views here.
 def index(request):
-    return render(request, "index.html")
+    return render(request, "index.html", {'home': 'active'})
 
 
 def notfound(request):
@@ -16,43 +15,43 @@ def notfound(request):
 
 
 def about(request):
-    return render(request, "about.html")
+    return render(request, "about.html", {'other': 'active'})
 
 
 def affiliate(request):
-    return render(request, "affiliate.html")
+    return render(request, "affiliate.html", {'other': 'active'})
 
 
 def contact(request):
-    return render(request, "contact.html")
+    return render(request, "contact.html", {'contact': 'active'})
 
 
 def faq(request):
-    return render(request, "faq.html")
+    return render(request, "faq.html", {'other': 'active'})
 
 
 def hiw(request):
-    return render(request, "how-it-work.html")
+    return render(request, "how-it-work.html", {'other': 'active'})
 
 
 def lottery(request):
-    return render(request, "lottery.html")
+    return render(request, "lottery.html", {'lottery': 'active'})
 
 
 def play(request):
-    return render(request, "play.html")
+    return render(request, "play.html", {'play': 'active'})
 
 
 def tc(request):
-    return render(request, "terms-conditions.html")
+    return render(request, "terms-conditions.html", {'other': 'active'})
 
 
 def tcd(request):
-    return render(request, "terms-conditions-details.html")
+    return render(request, "terms-conditions-details.html", {'other': 'active'})
 
 
 def tournaments(request):
-    return render(request, "tournaments.html")
+    return render(request, "tournaments.html", {'play': 'active'})
 
 
 def signup(request):
@@ -104,3 +103,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect("/")
+
+
+def pay(request):
+    pass

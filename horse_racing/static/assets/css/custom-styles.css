@@ -1,3 +1,11 @@
+.lose{
+    color: red !important;
+}
+
+.win{
+    color: green !important;
+}
+
 .horse-1 {
   background-color: #070b28;
   border-bottom: 1px solid #bbb;

@@ -11,8 +11,8 @@
 <section class="breadcrumb-area bc-tournaments">
 	<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
 	<div class="container">
-		<marquee behavior="" direction="left">All of the winning amount will be transferred to your saved account everyday
-			at 23:00</marquee>
+		<p>Choose  any Color Given Below to Make Your Dream Come true. This Decision May Appear to be a trivial Matter,
+		 But it May Represent a Moment in Your Decision Making.</p>
 		<div class="row">
 			<div class="col-lg-12">
 				<h4 class="title">
@@ -51,10 +51,17 @@
 	<h3>Next race starts in <span id="time">00</span> seconds!</h3>
 </div>
 
+<marquee behavior="" direction="left" class="balance-and-race-no">All of the winning amount will be transferred to your saved account everyday
+			at 23:00</marquee>
 <section class="balance-and-race-no">
 	<div class="race-no">
 		<h3>Race Number</h3>
 		<h4>20210511292</h4>
+	</div>
+
+	<div class="race-no">
+		<h3>Date</h3>
+		<h4 id="date"></h4>
 	</div>
 
 	{% if user.is_authenticated %}
@@ -72,13 +79,13 @@
 {% if user.is_authenticated %}
 <section class="balance-and-race-no buttons">
 	<div class="race-no">
-		<a href=""><button class='mybtn1 green'>Join Brick Red</button></a>
+		<button class='mybtn1 green' data-toggle="modal" data-target="#add_point" onclick="pay_for_game()">Join Brick Red</button>
 	</div>
 	<div class="balance">
-		<a href=""><button class='mybtn1 violet'>Join Violet</button></a>
+		<button class='mybtn1 violet' data-target="#add_point" data-toggle="modal" onclick="pay_for_game()">Join Violet</button>
 	</div>
 	<div class="balance">
-		<a href=""><button class='mybtn1 red'>Join Red</button></a>
+		<button class='mybtn1 red' onclick="pay_for_game()" data-target="#add_point" data-toggle="modal">Join Red</button>
 	</div>
 </section>
 {% else %}
@@ -94,7 +101,7 @@
 	</div>
 </section>
 {% endif %}
-
+<!--join button ends here-->
 
 <!-- Tournaments Area Start -->
 <div class="racing-section">
@@ -121,9 +128,6 @@
 	<canvas id="confetti" style="display: none; position: absolute; top: 0"></canvas>
 </div>
 <!-- Tournaments Area End -->
-
-
-<!-- Join buttons End  -->
 
 
 <!-- Latest Activities Area Start -->
@@ -156,12 +160,12 @@
 								<a class="nav-link active" id="pills-all-bets-tab" data-toggle="pill" href="#pills-all-bets" role="tab" aria-controls="pills-all-bets" aria-selected="true">All bets</a>
 							</li> -->
 						<li class="nav-item active">
-							<a class="nav-link active" id="pills-my-bets-tab" data-toggle="pill" href="#pills-my-bets" role="tab"
-								aria-controls="pills-my-bets" aria-selected="false">All bets</a>
+							<a class="nav-link active" id="pills-all-bets-tab" data-toggle="pill" href="#pills-all-bets" role="tab"
+								aria-controls="pills-all-bets" aria-selected="false">All bets</a>
 						</li>
-						<!-- <li class="nav-item">
-								<a class="nav-link" id="pills-my-jackpots-tab" data-toggle="pill" href="#pills-my-jackpots" role="tab" aria-controls="pills-my-jackpots" aria-selected="false">jackpots</a>
-							</li> -->
+						<li class="nav-item">
+								<a class="nav-link" id="pills-my-bets-tab" data-toggle="pill" href="#pills-my-bets" role="tab" aria-controls="pills-my-jackpots" aria-selected="false">My Bets</a>
+						</li>
 					</ul>
 				</div>
 				<div class="tab-content" id="pills-tabContent">
@@ -171,89 +175,77 @@
 							<table class="table">
 								<thead>
 									<tr>
-										<th scope="col">USER</th>
-										<th scope="col">BET ID</th>
-										<th scope="col">BET AMOUNT</th>
-										<th scope="col">CHANCE</th>
-										<th scope="col">GAME</th>
+										<th scope="col">RACE NO.</th>
+										<th scope="col">COLOR</th>
+										<th scope="col">BET POINT</th>
+										<th scope="col">RESULT</th>
+										<th scope="col">INCOME</th>
+										<th scope="col">TOTAL WIN POINT</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td>
-											<img src="{% static 'assets/images/people/p1.png' %}" alt="">
-											Tom Bass
+											20210511210
 										</td>
 										<td>
-											b799b8724b
+											<div class="color">Red</div>
 										</td>
 										<td>
-											<img src="{% static 'assets/images/inr.png' %}" alt="">
-											10
+											&#8377 10
 										</td>
-										<td>70%</td>
-										<td>Horse Racing</td>
+										<td class="lose">Lose</td>
+										<td>-10</td>
+										<td>500</td>
 									</tr>
 									<tr>
 										<td>
-											<img src="{% static 'assets/images/people/p2.png' %}" alt="">
-											Tom
+											20210511209
 										</td>
 										<td>
-											b799b8724b
+											<div class="color">Violet</div>
 										</td>
 										<td>
-											<img src="{% static 'assets/images/inr.png' %}" alt="">
-											20
+											&#8377 20
 										</td>
-										<td>70%</td>
-										<td>Horse Racing</td>
+										<td class="win">Win</td>
+										<td>20</td>
+										<td>300</td>
 									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="pills-my-bets" role="tabpanel"
+						aria-labelledby="pills-my-bets-tab">
+						<div class="responsive-table">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">RACE NO.</th>
+										<th scope="col">COLOR</th>
+										<th scope="col">BET POINT</th>
+										<th scope="col">RESULT</th>
+										<th scope="col">INCOME</th>
+										<th scope="col">TOTAL WIN POINT</th>
+									</tr>
+								</thead>
+								<tbody>
 									<tr>
 										<td>
-											<img src="{% static 'assets/images/people/p3.png' %}" alt="">
-											Hardy
+											20210511210
 										</td>
 										<td>
-											b799b8724b
+											<div class="color">Red</div>
 										</td>
 										<td>
-											<img src="{% static 'assets/images/inr.png' %}" alt="">
-											10
+											&#8377 10
 										</td>
-										<td>80%</td>
-										<td>Horse Racing</td>
+										<td class="lose">Lose</td>
+										<td>-10</td>
+										<td>500</td>
 									</tr>
-									<tr>
-										<td>
-											<img src="{% static 'assets/images/people/p4.png' %}" alt="">
-											Tom Hanky
-										</td>
-										<td>
-											b799b8724b
-										</td>
-										<td>
-											<img src="{% static 'assets/images/inr.png' %}" alt="">
-											30
-										</td>
-										<td>90%</td>
-										<td>Horse Racing</td>
-									</tr>
-									<tr>
-										<td>
-											<img src="{% static 'assets/images/people/p5.png' %}" alt="">
-											Tom Bass
-										</td>
-										<td>
-											b799b8724b
-										</td>
-										<td>
-											<img src="{% static 'assets/images/inr.png' %}" alt="">
-											10
-										</td>
-										<td>60%</td>
-										<td>Horse Racing</td>
-									</tr>
+
 								</tbody>
 							</table>
 						</div>
@@ -264,6 +256,45 @@
 	</div>
 </section>
 <!-- Latest Activities Area End -->
+
+<!-- Payment Area Start -->
+	<div class="modal fade login-modal" id="add_point" tabindex="-1" role="dialog" aria-labelledby="add_point" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div class="modal-body">
+					<div class="logo-area">
+							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+					</div>
+					<div class="header-area">
+						<h4 class="title">Choose from the below</h4>
+						<p class="sub-title">Amount to bet on Horse Racing </p>
+					</div>
+					<div class="form-area">
+						<form action="pay"  method="POST">
+							{% csrf_token %}
+							<div class="btn-container form-group">
+								<button type="button" value="10" class="mybtn1">&#8377 10</button>
+								<button type="button" value="20" class="mybtn1">&#8377 20</button>
+								<button type="button" value="30" class="mybtn1">&#8377 30</button>
+								<button type="button" value="50" class="mybtn1">&#8377 50</button>
+								<button type="button" value="100" class="mybtn1">&#8377 100</button>
+								<button type="button" value="200" class="mybtn1">&#8377 200</button>
+							</div>
+
+							<div class="form-group">
+								   <button type="submit" class="mybtn1">Proceed to pay</button>
+							</div>
+						</form>
+					</div>
+					<div class="form-footer">
+
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	<!-- Payment Area End -->
 
 {% block jslink %}
 <script>
