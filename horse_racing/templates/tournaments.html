@@ -271,15 +271,18 @@
 						<p class="sub-title">Amount to bet on Horse Racing </p>
 					</div>
 					<div class="form-area">
-						<form action="pay"  method="POST">
+						<form action="initiate_payment"  method="POST">
 							{% csrf_token %}
-							<div class="btn-container form-group">
-								<button type="button" value="10" class="mybtn1">&#8377 10</button>
-								<button type="button" value="20" class="mybtn1">&#8377 20</button>
-								<button type="button" value="30" class="mybtn1">&#8377 30</button>
-								<button type="button" value="50" class="mybtn1">&#8377 50</button>
-								<button type="button" value="100" class="mybtn1">&#8377 100</button>
-								<button type="button" value="200" class="mybtn1">&#8377 200</button>
+							<div class="form-group">
+								<select name="amount">
+									<option value="10">&#8377 10</option>
+									<option value="20">&#8377 20</option>
+									<option value="30">&#8377 30</option>
+									<option value="50">&#8377 50</option>
+									<option value="100">&#8377 100</option>
+									<option value="200">&#8377 200</option>
+									<option value="500">&#8377 500</option>
+								</select>
 							</div>
 
 							<div class="form-group">
