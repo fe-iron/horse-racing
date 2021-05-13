@@ -35,3 +35,43 @@ class Transaction(models.Model):
 
     def __str__(self):
         return self.order_id
+
+
+class TransactionDetail(models.Model):
+    made_by = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="Transaction_detail")
+    transaction_id = models.CharField(max_length=255)
+    bank_txn_id = models.CharField(max_length=255)
+    currency = models.CharField(max_length=10)
+    status = models.CharField(max_length=20)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    gateway_name = models.CharField(max_length=50)
+    bank_name = models.CharField(max_length=100)
+    bin_name = models.CharField(max_length=100)
+    payment_mode = models.CharField(max_length=10)
+
+    def __str__(self):
+        return str(self.timestamp) + " " + str(self.transaction_id)
+
+
+class HorseRacing(models.Model):
+    game_no = models.IntegerField()
+    open = models.BooleanField(default=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    horse1 = models.IntegerField(default=0)
+    horse2 = models.IntegerField(default=0)
+    horse3 = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.game_no)
+
+
+class Player(models.Model):
+    player = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="player_name")
+    timestamp = models.DateTimeField(auto_now_add=True)
+    game = models.ForeignKey(HorseRacing, on_delete=models.SET_NULL, null=True, related_name="game_name")
+    bet_on = models.CharField(max_length=10, null=False)
+    amount = models.IntegerField()
+    result = models.CharField(max_length=10, default="Not Set")
+
+    def __str__(self):
+        return str(self.player)

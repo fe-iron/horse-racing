@@ -56,7 +56,7 @@
 <section class="balance-and-race-no">
 	<div class="race-no">
 		<h3>Race Number</h3>
-		<h4>20210511292</h4>
+		<h4>{{race_no}}</h4>
 	</div>
 
 	<div class="race-no">
@@ -76,16 +76,17 @@
 
 
 <!-- Join buttons Start  -->
+{% if not paid %}
 {% if user.is_authenticated %}
 <section class="balance-and-race-no buttons">
 	<div class="race-no">
-		<button class='mybtn1 green' data-toggle="modal" data-target="#add_point" onclick="pay_for_game()">Join Brick Red</button>
+		<button class='mybtn1 green' data-toggle="modal" data-target="#add_point" onclick="set_horse_value('horse1')">Join Brick Red</button>
 	</div>
 	<div class="balance">
-		<button class='mybtn1 violet' data-target="#add_point" data-toggle="modal" onclick="pay_for_game()">Join Violet</button>
+		<button class='mybtn1 violet' data-target="#add_point" data-toggle="modal" onclick="set_horse_value('horse2')">Join Violet</button>
 	</div>
 	<div class="balance">
-		<button class='mybtn1 red' onclick="pay_for_game()" data-target="#add_point" data-toggle="modal">Join Red</button>
+		<button class='mybtn1 red' onclick="set_horse_value('horse3')" data-target="#add_point" data-toggle="modal">Join Red</button>
 	</div>
 </section>
 {% else %}
@@ -100,6 +101,7 @@
 		<a href="login"><button class='mybtn1 red'>Join Red</button></a>
 	</div>
 </section>
+{% endif %}
 {% endif %}
 <!--join button ends here-->
 
@@ -270,6 +272,7 @@
 					<div class="form-area">
 						<form action="initiate_payment"  method="POST">
 							{% csrf_token %}
+							<input type="hidden" value="" id="horse_name" name="name">
 							<div class="form-group">
 								<select name="amount">
 									<option value="10">&#8377 10</option>

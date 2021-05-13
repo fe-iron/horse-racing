@@ -1,11 +1,13 @@
 from django.views import View
+from datetime import date
 from django.conf import settings
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
-from .models import Registration, Transaction
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sites.shortcuts import get_current_site
 from .paytm_checksum import generate_checksum, verify_checksum
+from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing
 
 
 # Create your views here.
@@ -54,7 +56,24 @@ def tcd(request):
 
 
 def tournaments(request):
-    return render(request, "tournaments.html", {'play': 'active'})
+    try:
+        g_no = HorseRacing.objects.latest('timestamp')
+        if g_no.open:
+            g_no = g_no.game_no
+        else:
+            g_no = g_no.game_no
+            g_no += 1
+
+    except HorseRacing.DoesNotExist:
+        h = HorseRacing(game_no=1)
+        h.save()
+        g_no = 1
+    d = date.today().strftime("%Y%m%d")
+    h = str(g_no)
+    d += h
+
+
+    return render(request, "tournaments.html", {'play': 'active', "race_no": d})
 
 
 def signup(request):
@@ -117,11 +136,37 @@ def initiate_payment(request):
         return redirect('tournaments')
 
     amount = int(request.POST['amount'])
+    horse_name = request.POST['name']
+
     user = request.user
     transaction = Transaction.objects.create(made_by=user, amount=amount)
     transaction.save()
     merchant_key = settings.PAYTM_SECRET_KEY
-    # url = f"https://securegw-stage.paytm.in/theia/api/v1/initiateTransaction?mid={merchant_key}&orderId={transaction.order_id}"
+
+    # setting values for horse race and player model
+    # for horse racing model
+    horse_race = HorseRacing.objects.latest('timestamp')
+    betted_horse_name = ''
+    if horse_race.open:
+        if horse_name == "horse1":
+            total_amount = horse_race.horse1
+            betted_horse_name = 'Brick Red'
+        elif horse_name == "horse2":
+            total_amount = horse_race.horse2
+            betted_horse_name = 'Violet'
+        else:
+            total_amount = horse_race.horse3
+            betted_horse_name = 'Red'
+
+        total_amount += amount
+        horse_race.horse1 = total_amount
+        horse_race.save()
+
+    # for player model
+    player = Player(player=user, game=horse_race, bet_on=betted_horse_name, amount=amount)
+    player.save()
+
+
     params = {
         'MID': settings.PAYTM_MERCHANT_ID,
         'ORDER_ID': str(transaction.order_id),
@@ -132,7 +177,7 @@ def initiate_payment(request):
         # ('EMAIL': request.user.email),
         # ('MOBILE_N0': '9911223388'),
         'INDUSTRY_TYPE_ID': settings.PAYTM_INDUSTRY_TYPE_ID,
-        'CALLBACK_URL': 'http://127.0.0.1:8000/callback',
+        'CALLBACK_URL': 'http://'+get_current_site(request).domain+'/callback',
         # ('PAYMENT_MODE_ONLY', 'NO'),
     }
     checksum = generate_checksum(params, merchant_key)

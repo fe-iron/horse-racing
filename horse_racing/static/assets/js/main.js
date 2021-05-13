@@ -238,7 +238,10 @@ date_with_day += year
 
 document.getElementById('date').innerHTML = date_with_day;
 
-/*-----------------------------------
-        modal for payment for games
-    ------------------------------------*/
+/*------------------------------------------------
+        setting modal for selection of horse
+    --------------------------------------------------*/
 
+function set_horse_value(name){
+    $('#horse_name').val(name)
+}
