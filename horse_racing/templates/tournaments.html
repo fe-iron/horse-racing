@@ -11,7 +11,7 @@
 <section class="breadcrumb-area bc-tournaments">
 	<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
 	<div class="container">
-		<p>Choose  any Color Given Below to Make Your Dream Come true. This Decision May Appear to be a trivial Matter,
+		<p class="motivation">Choose  any Color Given Below to Make Your Dream Come true. This Decision May Appear to be a trivial Matter,
 		 But it May Represent a Moment in Your Decision Making.</p>
 		<div class="row">
 			<div class="col-lg-12">
@@ -50,9 +50,7 @@
 <div class="next-race">
 	<h3>Next race starts in <span id="time">00</span> seconds!</h3>
 </div>
-
-<marquee behavior="" direction="left" class="balance-and-race-no">All of the winning amount will be transferred to your saved account everyday
-			at 23:00</marquee>
+<!--for race number and date-->
 <section class="balance-and-race-no">
 	<div class="race-no">
 		<h3>Race Number</h3>
@@ -63,30 +61,39 @@
 		<h3>Date</h3>
 		<h4 id="date"></h4>
 	</div>
+</section>
+<!--for available balance and winning banlace-->
+{% if user.is_authenticated %}
+<section class="balance-and-race-no">
+	<div class="race-no">
+		<h3>Available Point</h3>
+		<h4>&#8377; {{bal}}  &nbsp <button class="mybtn1" data-target="#add_point" data-toggle="modal">Add Point</button></h4>
 
-	{% if user.is_authenticated %}
+	</div>
+
 	<div class="balance">
 		<h3>Available Balance</h3>
 		<h4>&#8377 108</h4>
 	</div>
-	{% endif %}
 </section>
+{% endif %}
 
+<marquee behavior="" direction="left" class="balance-and-race-no">All of the winning amount will be transferred to your saved account everyday
+			at 23:00</marquee>
 <!-- Race Numbeter and Balance Section End  -->
 
 
 <!-- Join buttons Start  -->
-{% if not paid %}
 {% if user.is_authenticated %}
 <section class="balance-and-race-no buttons">
 	<div class="race-no">
-		<button class='mybtn1 green' data-toggle="modal" data-target="#add_point" onclick="set_horse_value('horse1')">Join Brick Red</button>
+		<button class='mybtn1 green' data-toggle="modal" data-target="#join_game"  onclick="set_horse('horse1')">Join Brick Red</button>
 	</div>
 	<div class="balance">
-		<button class='mybtn1 violet' data-target="#add_point" data-toggle="modal" onclick="set_horse_value('horse2')">Join Violet</button>
+		<button class='mybtn1 violet' data-toggle="modal" data-target="#join_game" onclick="set_horse('horse2')">Join Violet</button>
 	</div>
 	<div class="balance">
-		<button class='mybtn1 red' onclick="set_horse_value('horse3')" data-target="#add_point" data-toggle="modal">Join Red</button>
+		<button class='mybtn1 red' data-toggle="modal" data-target="#join_game" onclick="set_horse('horse3')">Join Red</button>
 	</div>
 </section>
 {% else %}
@@ -101,7 +108,6 @@
 		<a href="login"><button class='mybtn1 red'>Join Red</button></a>
 	</div>
 </section>
-{% endif %}
 {% endif %}
 <!--join button ends here-->
 
@@ -132,7 +138,7 @@
 <!-- Tournaments Area End -->
 
 
-<!-- Latest Activities Area Start -->
+<!-- game summary Area Start -->
 <section class="activities">
 	<img class="shape shape1" src="{% static 'assets/images/people/shape1.png' %}" alt="">
 	<img class="shape shape2" src="{% static 'assets/images/people/shape2.png' %}" alt="">
@@ -254,10 +260,10 @@
 		</div>
 	</div>
 </section>
-<!-- Latest Activities Area End -->
+<!-- game summary Area End -->
 
 <!-- Payment Area Start -->
-	<div class="modal fade login-modal" id="add_point" tabindex="-1" role="dialog" aria-labelledby="add_point" aria-hidden="true" data-backdrop="static">
+<div class="modal fade login-modal" id="add_point" tabindex="-1" role="dialog" aria-labelledby="add_point" aria-hidden="true" data-backdrop="static">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -266,13 +272,12 @@
 							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
 					</div>
 					<div class="header-area">
-						<h4 class="title">Choose from the below</h4>
-						<p class="sub-title">Amount to bet on Horse Racing </p>
+						<h4 class="title">Choose from the below Pack</h4>
+						<p class="sub-title">to recharge your wallet</p>
 					</div>
 					<div class="form-area">
-						<form action="initiate_payment"  method="POST">
+						<form  method="POST" action="initiate_payment">
 							{% csrf_token %}
-							<input type="hidden" value="" id="horse_name" name="name">
 							<div class="form-group">
 								<select name="amount">
 									<option value="10">&#8377 10</option>
@@ -282,6 +287,9 @@
 									<option value="100">&#8377 100</option>
 									<option value="200">&#8377 200</option>
 									<option value="500">&#8377 500</option>
+									<option value="500">&#8377 1000</option>
+									<option value="500">&#8377 1500</option>
+									<option value="500">&#8377 2000</option>
 								</select>
 							</div>
 
@@ -297,7 +305,69 @@
 			</div>
 			</div>
 		</div>
-	<!-- Payment Area End -->
+<!-- Payment Area End -->
+
+<!-- joining pack selection Area Start -->
+<div class="modal fade login-modal" id="join_game" tabindex="-1" role="dialog" aria-labelledby="join_game" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div class="modal-body">
+					<div class="logo-area">
+							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+					</div>
+					<div class="header-area">
+						<h4 class="title">Choose from the below Pack</h4>
+						<p class="sub-title">to bet on Horse racing</p>
+					</div>
+					<div class="form-area">
+						<form  method="POST">
+							<div class="form-group">
+								<select name="amount" id="amount_pack">
+									<option value="10">&#8377 10</option>
+									<option value="20">&#8377 20</option>
+									<option value="30">&#8377 30</option>
+									<option value="50">&#8377 50</option>
+									<option value="100">&#8377 100</option>
+									<option value="200">&#8377 200</option>
+									<option value="500">&#8377 500</option>
+									<option value="500">&#8377 1000</option>
+									<option value="500">&#8377 1500</option>
+									<option value="500">&#8377 2000</option>
+								</select>
+							</div>
+								<input type="hidden" value="" id="horse_name" name="name">
+							<div class="form-group">
+								   <button type="button" onclick="join_race()" class="mybtn1">Join</button>
+							</div>
+						</form>
+					</div>
+					<div class="form-footer">
+
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+<!-- joining pack selection Area End -->
+
+<!-- notification area Start -->
+<div class="modal fade login-modal" id="noti" tabindex="-1" role="dialog" aria-labelledby="noti" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div class="modal-body">
+					<div class="logo-area">
+							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+					</div>
+					<div class="header-area">
+						<h4 class="title" id="modal_title"></h4>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+<!-- notification area End -->
 
 {% block jslink %}
 <script>
@@ -319,7 +389,9 @@
 		countdown: true,
 		showSeconds: false
 	});
-
+	{% for msg in messages %}
+		alert('{{msg}}');
+	{% endfor %}
 </script>
 {% endblock %}
 

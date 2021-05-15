@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.views import View
 from datetime import date
 from django.conf import settings
@@ -7,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sites.shortcuts import get_current_site
 from .paytm_checksum import generate_checksum, verify_checksum
-from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing
+from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing, GamePointHistory, GamePlayHistory
 
 
 # Create your views here.
@@ -71,9 +72,10 @@ def tournaments(request):
     d = date.today().strftime("%Y%m%d")
     h = str(g_no)
     d += h
-
-
-    return render(request, "tournaments.html", {'play': 'active', "race_no": d})
+    if Registration.objects.filter(user=request.user).exists():
+        bal = Registration.objects.get(user=request.user)
+        bal = bal.balance
+    return render(request, "tournaments.html", {'play': 'active', "race_no": d, "bal": bal})
 
 
 def signup(request):
@@ -127,50 +129,21 @@ def logout(request):
     return redirect("/")
 
 
-def redirect(request):
-    return render(request, "payments/redirect.html")
-
-
 def initiate_payment(request):
     if request.method == "GET":
         return redirect('tournaments')
 
     amount = int(request.POST['amount'])
-    horse_name = request.POST['name']
 
     user = request.user
     transaction = Transaction.objects.create(made_by=user, amount=amount)
     transaction.save()
     merchant_key = settings.PAYTM_SECRET_KEY
 
-    # setting values for horse race and player model
-    # for horse racing model
-    horse_race = HorseRacing.objects.latest('timestamp')
-    betted_horse_name = ''
-    if horse_race.open:
-        if horse_name == "horse1":
-            total_amount = horse_race.horse1
-            betted_horse_name = 'Brick Red'
-        elif horse_name == "horse2":
-            total_amount = horse_race.horse2
-            betted_horse_name = 'Violet'
-        else:
-            total_amount = horse_race.horse3
-            betted_horse_name = 'Red'
-
-        total_amount += amount
-        horse_race.horse1 = total_amount
-        horse_race.save()
-
-    # for player model
-    player = Player(player=user, game=horse_race, bet_on=betted_horse_name, amount=amount)
-    player.save()
-
-
     params = {
         'MID': settings.PAYTM_MERCHANT_ID,
         'ORDER_ID': str(transaction.order_id),
-        'CUST_ID': 'elahifaiz00@gmail.com',#str(transaction.made_by.email),
+        'CUST_ID': 'fe-iron9091@gmail.com', # str(transaction.made_by.email),
         'TXN_AMOUNT': str(transaction.amount),
         'CHANNEL_ID': settings.PAYTM_CHANNEL_ID,
         'WEBSITE': settings.PAYTM_WEBSITE,
@@ -201,10 +174,89 @@ def callback(request):
                 paytm_params[key] = str(value[0])
         # Verify checksum
         is_valid_checksum = verify_checksum(paytm_params, settings.PAYTM_SECRET_KEY, str(paytm_checksum))
+
         if is_valid_checksum:
             received_data['message'] = "Checksum Matched"
         else:
             received_data['message'] = "Checksum Mismatched"
             return render(request, 'payments/callback.html', context=received_data)
-        return render(request, 'payments/callback.html', context=received_data)
 
+        txn = Transaction.objects.get(order_id=paytm_params['ORDERID'])
+
+        if paytm_params['STATUS'] == 'TXN_SUCCESS':
+            txn_detail = TransactionDetail(made_by=txn, transaction_id=paytm_params['TXNID'],
+                                           bank_txn_id=paytm_params['BANKTXNID'], currency=paytm_params['CURRENCY'],
+                                           status=paytm_params['STATUS'], gateway_name=paytm_params['GATEWAYNAME'],
+                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'])
+            txn_detail.save()
+            messages.info(request, "Recharged Successfully! Wallet Updated")
+
+            user = txn.made_by
+            reg = Registration.objects.get(user=user)
+            bal = float(reg.balance)
+            bal += float(paytm_params['TXNAMOUNT'])
+            reg.balance = str(bal)
+            reg.save()
+
+        else:
+            txn_detail = TransactionDetail(made_by=txn, transaction_id=paytm_params['TXNID'],
+                                           bank_txn_id=paytm_params['BANKTXNID'], currency=paytm_params['CURRENCY'],
+                                           status=paytm_params['STATUS'], gateway_name=paytm_params['GATEWAYNAME'],
+                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'])
+            txn_detail.save()
+            messages.info(request, "Recharge Unsuccessfull! Try Again")
+
+        return redirect("tournaments")
+
+
+@csrf_exempt
+def join_game(request):
+    if request.is_ajax and request.method == "POST":
+        user = request.user
+        horse_name = request.POST.get('horse_name')
+        amount = int(request.POST.get('amount'))
+        # setting values for horse race and player model
+        # for horse racing model
+        horse_race = HorseRacing.objects.latest('timestamp')
+        betted_horse_name = ''
+
+        if horse_race.open:
+            if horse_name == "horse1":
+                total_amount = horse_race.horse1
+                total_amount += amount
+                betted_horse_name = 'Brick Red'
+                horse_race.horse1 = total_amount
+
+            elif horse_name == "horse2":
+                total_amount = horse_race.horse2
+                total_amount += amount
+                horse_race.horse2 = total_amount
+                betted_horse_name = 'Violet'
+
+            else:
+                total_amount = horse_race.horse3
+                total_amount += amount
+                horse_race.horse3 = total_amount
+                betted_horse_name = 'Red'
+
+            horse_race.save()
+        else:
+            return JsonResponse({"msg": "Wait for the game to over then try again!"}, status=200)
+
+        # for player model
+        player = Player(player=user, game=horse_race, bet_on=betted_horse_name, amount=amount)
+        player.save()
+
+        # deducting balance from users account
+        reg_user = Registration.objects.get(user=user)
+        reg_user_bal = float(reg_user.balance)
+        reg_user_bal -= amount
+        reg_user.balance = str(reg_user_bal)
+        reg_user.save()
+
+        # making history
+        gph = GamePointHistory(amount=amount, made_by=user, balance=int(reg_user_bal))
+        gph.save()
+        return JsonResponse({"msg": True, "bal": reg_user_bal}, status=200)
+
+    return JsonResponse({"msg": False}, status=200)

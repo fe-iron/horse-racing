@@ -242,6 +242,38 @@ document.getElementById('date').innerHTML = date_with_day;
         setting modal for selection of horse
     --------------------------------------------------*/
 
-function set_horse_value(name){
-    $('#horse_name').val(name)
+function set_horse(horse_name){
+    $('#horse_name').val(horse_name);
+}
+
+/*------------------------------------------------
+                Join the horse racing
+    --------------------------------------------------*/
+function join_race(horse_name){
+    var amount = $('#amount_pack').val();
+    var horse_name = $('#horse_name').val();
+    // GET AJAX request
+    $.ajax({
+            type: 'POST',
+            url: "join_game",
+            data: {"horse_name": horse_name, "amount": amount},
+            success: function (response) {
+                if(response["msg"] == false){
+                    $('#modal_title').html("Sorry something went wrong, try again!");
+                    $('#modal_title').style("color": "red");
+                }else if(response["msg"] == true){
+                    $('#modal_title').html("You've joined successfully!");
+                    $('#modal_title').style("color": "green");
+                }else{
+                    $('#modal_title').html(response["msg"]);
+                    $('#modal_title').style("color": "orange");
+                }
+                $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+			    $('#join_game').modal('hide');
+			    $('#noti').modal('show');
+            },
+            error: function (response) {
+                console.log(response)
+            }
+    })
 }

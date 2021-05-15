@@ -5,9 +5,13 @@ from django.db import models
 # Create your models here.
 class Registration(models.Model):
     referral = models.CharField(max_length=12, null=False)
-    phone_number = models.IntegerField(blank=True)
+    phone_number = models.IntegerField(blank=True, unique=True)
     full_name = models.CharField(max_length=255, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    balance = models.CharField(max_length=50, default="20")
+
+    def __str__(self):
+        return self.full_name
 
 
 class Referral(models.Model):
@@ -46,7 +50,6 @@ class TransactionDetail(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     gateway_name = models.CharField(max_length=50)
     bank_name = models.CharField(max_length=100)
-    bin_name = models.CharField(max_length=100)
     payment_mode = models.CharField(max_length=10)
 
     def __str__(self):
@@ -75,3 +78,26 @@ class Player(models.Model):
 
     def __str__(self):
         return str(self.player)
+
+
+# this model is for stroing history of users betting
+class GamePointHistory(models.Model):
+    time = models.TimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
+    amount = models.IntegerField()
+    made_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recharge_by")
+    balance = models.IntegerField()
+
+    def __str__(self):
+        return str(self.amount)
+
+
+class GamePlayHistory(models.Model):
+    time = models.TimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
+    amount = models.IntegerField()
+    which_horse = models.CharField(max_length=20)
+    result = models.CharField(max_length=10, default='Lose')
+
+    def __str__(self):
+        return self.which_horse
