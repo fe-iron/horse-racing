@@ -1,21 +1,21 @@
-.lose{
-    color: red !important;
+.lose {
+  color: red !important;
 }
 
-.win{
-    color: green !important;
+.win {
+  color: green !important;
 }
 
-.color-win{
-    width: 2em;
-    height: 1em;
-    background: green;
+.color-win {
+  width: 2em;
+  height: 1em;
+  background: green;
 }
 
-.color-lose{
-    width: 2em;
-    height: 1em;
-    background: red;
+.color-lose {
+  width: 2em;
+  height: 1em;
+  background: red;
 }
 
 .horse-1 {
@@ -85,18 +85,18 @@
 
 .balance-and-race-no {
   background: #070b28;
-  padding: 1em 2em; 
+  padding: 1em 2em;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
-.balance-and-race-no h3  {
+.balance-and-race-no h3 {
   font-size: 1.5em;
 }
 
 .balance-and-race-no h4 {
   font-size: 1.25em;
 }
-
 
 @media screen and (max-width: 300px) {
   .balance-and-race-no {
@@ -114,7 +114,7 @@
 }
 
 .mybtn1.red {
-  background: #C32A00;
+  background: #c32a00;
 }
 
 .balance-and-race-no.buttons {
@@ -129,11 +129,66 @@
     justify-content: space-between;
     min-height: 24em;
   }
-  .balance-and-race-no, .next-race {
+  .balance-and-race-no,
+  .next-race {
     font-size: 0.7em;
-    text-align: center;
   }
-  .motivation{
+  .motivation {
     font-size: 0.7em;
+  }
+}
+
+.breadcrumb-area.bc-tournaments {
+  padding-top: 30px;
+}
+
+.activities {
+  overflow: hidden;
+}
+
+.add-point {
+  font-size: 0.7em;
+  padding: 0.6em 1.5em;
+}
+
+@media screen and (max-width: 480px) {
+  .balance-and-race-no.buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 24em;
+  }
+  .balance-and-race-no,
+  .next-race {
+    font-size: 0.7em;
+  }
+  .motivation {
+    font-size: 0.7em;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .balance-and-race-no.buttons {
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 24em;
+  }
+  .balance-and-race-no,
+  .next-race {
+    font-size: 0.6em;
+  }
+  .motivation {
+    font-size: 0.6em;
+  }
+}
+
+@media screen and (max-width: 720px){
+  .breadcrumb-list {
+    display: none;
+  }
+
+  .breadcrumb-area.bc-tournaments {
+    padding-bottom: 1em;
   }
 }
