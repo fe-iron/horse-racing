@@ -33,10 +33,6 @@
 	</div>
 	<!-- preloader area end -->
 
-   	<!-- Header Area Start  -->
-	
-	<!-- Header Area End  -->
-
 <!-- Breadcrumb Area Start -->
 <section class="breadcrumb-area bc-tournaments">
 	<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
@@ -80,8 +76,9 @@
 <div class="next-race">
 	<h3>Next race starts in <span id="time">00</span> seconds!</h3>
 </div>
-<!--for race number and date-->
-<section class="balance-and-race-no">
+
+	<!--for race number and date-->
+<section class="balance-and-race-no" autofocus>
 	<div class="race-no">
 		<h3>Race Number</h3>
 		<h4>{{race_no}}</h4>
@@ -97,25 +94,25 @@
 <section class="balance-and-race-no">
 	<div class="race-no">
 		<h3>Available Point</h3>
-		<h4>&#8377; <span>{{bal}}</span>  &nbsp <button class="mybtn1 add-point" data-target="#add_point" data-toggle="modal">Add Point</button></h4>
+		<h4>&#8377; <span id="wallet_bal">{{bal}}</span>  &nbsp <button class="mybtn1 add-point" data-target="#add_point" data-toggle="modal">Add Point</button></h4>
 
 	</div>
 
 	<div class="balance">
 		<h3>Available Balance</h3>
-		<h4>&#8377 0</h4>
+		<h4>&#8377 <span id="win_wallet_bal">{{win_bal}}</span></h4>
 	</div>
 </section>
 {% endif %}
 
-<marquee behavior="" direction="left" class="balance-and-race-no">All of the winning amount will be transferred to your saved account everyday
-			at 23:00</marquee>
+<marquee behavior="" direction="left" class="balance-and-race-no">All of the winning amount will be transferred to your
+	saved account everyday at 23:00</marquee>
 <!-- Race Numbeter and Balance Section End  -->
 
 
 <!-- Join buttons Start  -->
 {% if user.is_authenticated %}
-<section class="balance-and-race-no buttons">
+<section class="balance-and-race-no buttons hide">
 	<div class="race-no">
 		<button class='mybtn1 green' data-toggle="modal" data-target="#join_game"  onclick="set_horse('horse1')">Join Brick Red</button>
 	</div>
@@ -127,7 +124,7 @@
 	</div>
 </section>
 {% else %}
-<section class="balance-and-race-no buttons">
+<section class="balance-and-race-no buttons hide">
 	<div class="race-no">
 		<a href="login"><button class='mybtn1 green'>Join Brick Red</button></a>
 	</div>
@@ -399,7 +396,6 @@
 		</div>
 <!-- notification area End -->
 
-
 	<!-- Back to Top Start -->
 	<div class="bottomtotop">
 		<i class="fas fa-chevron-right"></i>
@@ -420,8 +416,11 @@
 	<!-- main -->
 	<script src="{% static 'assets/js/main.js' %}"></script>
 <script>
+
 	var horse_image = '{% static "assets/images/game/stopped-horse.png" %}';
 	var horse_gif = '{% static "assets/images/game/horse.gif" %}';
+	var milli_sec_left = {{milli_sec_left}};
+	var second_left = {{second_left}};
 </script>
 <script src="{% static 'assets/js/timer.js' %}"></script>
 <script src="{% static 'assets/js/countdown.js' %}"></script>

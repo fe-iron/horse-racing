@@ -35,7 +35,7 @@
 .horse-1 .horse-gif {
   position: relative;
 }
-
+/*
 .animation1 {
   animation: run 35s linear forwards;
 }
@@ -47,6 +47,7 @@
 .animation3 {
   animation: run 30s linear forwards;
 }
+*/
 
 .horse-2 .horse-gif {
   position: relative;

@@ -1,14 +1,19 @@
-from django.http import JsonResponse
-from django.views import View
+import time
 from datetime import date
+from .set_timer import SetTime, now_minute, now_sec
 from django.conf import settings
+from django.http import JsonResponse
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from .paytm_checksum import generate_checksum, verify_checksum
 from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing, GamePointHistory, GamePlayHistory
+
+
+SetTime().start()
 
 
 # Create your views here.
@@ -56,26 +61,71 @@ def tcd(request):
     return render(request, "terms-conditions-details.html", {'other': 'active'})
 
 
+@login_required(login_url='/login')
 def tournaments(request):
+    n_minute = int(now_minute)
+    n_sec = int(now_sec)
+    mili_sec = 1000
+
+    t = time.localtime()
+    current_minute = int(time.strftime("%M", t))
+    current_second = int(time.strftime("%S", t))
+    print("now minute: ", now_minute)
+    print("now second: ", now_sec)
+    #
+    # if n_minute == 0:
+    #     n_minute = 60
+    # elif n_minute == 1:
+    #     n_minute = 61
+    # elif n_minute == 2:
+    #     n_minute = 62
+    # elif n_minute == 3:
+    #     n_minute = 63
+    # elif n_minute == 4:
+    #     n_minute = 64
+
+    current_minute = abs(n_minute - current_minute)
+    if n_sec < current_second:
+        current_second = n_sec
+
+    current_minute = current_minute * 60  # converting to second
+    current_second = current_second + current_minute
+    mili_sec *= current_second
     try:
+        user = request.user
         g_no = HorseRacing.objects.latest('timestamp')
         if g_no.open:
             g_no = g_no.game_no
         else:
             g_no = g_no.game_no
             g_no += 1
+            h_race = HorseRacing(game_no=g_no)
+            h_race.save()
+
 
     except HorseRacing.DoesNotExist:
         h = HorseRacing(game_no=1)
         h.save()
         g_no = 1
+
     d = date.today().strftime("%Y%m%d")
     h = str(g_no)
     d += h
-    if Registration.objects.filter(user=request.user).exists():
+    if Registration.objects.filter(user=user).exists():
         bal = Registration.objects.get(user=request.user)
+        win_bal = bal.win_balance
         bal = bal.balance
-    return render(request, "tournaments.html", {'play': 'active', "race_no": d, "bal": bal})
+
+    print("milii : ",mili_sec, " sec: ", current_second)
+    context = {
+        'play': 'active',
+        "race_no": d,
+        "bal": bal,
+        "second_left": current_second,
+        "milli_sec_left": mili_sec,
+        "win_bal": win_bal,
+    }
+    return render(request, "tournaments.html", context)
 
 
 def signup(request):
@@ -260,3 +310,67 @@ def join_game(request):
         return JsonResponse({"msg": True, "bal": reg_user_bal}, status=200)
 
     return JsonResponse({"msg": False}, status=200)
+
+
+def start_race(request):
+    if request.is_ajax and request.method == 'GET':
+        horse_race = HorseRacing.objects.latest('timestamp')
+        winner = None
+        horse = ''
+        if horse_race.open:
+            winner = '30'
+            h1 = horse_race.horse1
+            h2 = horse_race.horse2
+            h3 = horse_race.horse3
+
+            if h3 <= h1 and h3 <= h2:
+                horse = 'horse3'
+                horse_race.winner = 'horse3'
+            elif h2 <= h1 and h2 <= h3:
+                horse = 'horse2'
+                horse_race.winner = 'horse2'
+            else:
+                horse = 'horse1'
+                horse_race.winner = 'horse1'
+            horse_race.save()
+            return JsonResponse({"winner": winner, "horse": horse}, status=200)
+
+    return JsonResponse({"winner": False}, status=200)
+
+
+@csrf_exempt
+def set_result(request):
+    if request.is_ajax and request.method == "POST":
+        selected = request.POST.get('selected', None)
+        winner = request.POST.get('winner', None)
+
+        horse_race = HorseRacing.objects.latest('timestamp')
+        user = request.user
+        player = Player.objects.filter(player=user)[0]
+        reg_user = Registration.objects.filter(user=user)[0]
+        amount = player.amount
+
+        if winner == 'horse1':
+            horse_race.winner = 'horse1'
+        elif winner == 'horse2':
+            horse_race.winner = 'horse2'
+        elif winner == 'horse3':
+            horse_race.winner = 'horse3'
+        horse_race.open = False
+        horse_race.save()
+
+        if winner == selected:
+            player.result = 'Win'
+            reg_user.win_balance = str(amount * 2)
+            reg_user.save()
+        else:
+            player.result = 'Lose'
+
+        player.save()
+
+        game_history = GamePlayHistory(amount=player.amount, which_horse=selected, result=player.result, game=horse_race,
+                                       player=player)
+        game_history.save()
+
+        return JsonResponse({"result": True}, status=200)
+    return JsonResponse({"result": False}, status=200)

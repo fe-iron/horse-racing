@@ -1,6 +1,7 @@
 // Credit: Mateusz Rybczonec
 
 const FULL_DASH_ARRAY = 283
+winner_horse_name = ''
 const WARNING_THRESHOLD = 120
 const ALERT_THRESHOLD = 60
 const countdown = document.querySelector('.countdown')
@@ -12,14 +13,15 @@ horses.forEach((horse, i) => {
     if (i === 1) {
       document.querySelector('.next-race h3').style.opacity = '1'
       var fiveMinutes = 20,
-        display = document.querySelector('#time')
+      display = document.querySelector('#time')
       startTimer(fiveMinutes, display)
-      setTimeout(() => {
-        location.href = 'tournaments'
-      }, 20000)
+//      setTimeout(() => {
+//        location.href = 'tournaments'
+//      }, 20000)
+        setResult();
     }
     horseImages[i].src = horse_image
-    document.getElementById('confetti').style.display = 'block'
+    document.getElementById('confetti').style.display = 'block';
   })
 })
 
@@ -30,7 +32,8 @@ setTimeout(() => {
     horseImage.src = horse_gif
     horses[i].classList.add(`animation${i + 1}`)
   })
-}, 240000)
+  startRace();
+}, milli_sec_left)
 
 const COLOR_CODES = {
   info: {
@@ -46,7 +49,7 @@ const COLOR_CODES = {
   },
 }
 
-const TIME_LIMIT = 240
+const TIME_LIMIT = second_left
 let timePassed = 0
 let timeLeft = TIME_LIMIT
 let timerInterval = null
@@ -86,6 +89,9 @@ function startTimer() {
   timerInterval = setInterval(() => {
     timePassed = timePassed += 1
     timeLeft = TIME_LIMIT - timePassed
+    if(timeLeft <= 60 && timeLeft >= 55){
+        $('.hide').css('display', "none");
+    }
     document.getElementById('base-timer-label').innerHTML = formatTime(timeLeft)
     setCircleDasharray()
     setRemainingPathColor(timeLeft)
@@ -138,4 +144,85 @@ function setCircleDasharray() {
   document
     .getElementById('base-timer-path-remaining')
     .setAttribute('stroke-dasharray', circleDasharray)
+}
+
+
+/*------------------------------------------------
+                Set Result
+    --------------------------------------------------*/
+
+function setResult(){
+	var horse_name = $('#horse_name').val();
+
+	if(horse_name == winner_horse_name){
+	    $('#modal_title').html("Congratulations! You've won");
+	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	    $('#noti').modal('show');
+	}else if(horse_name == winner_horse_name){
+	    $('#modal_title').html("Congratulations! You've won");
+	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	    $('#noti').modal('show');
+	}else if(horse_name == winner_horse_name){
+	    $('#modal_title').html("Congratulations! You've won");
+	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	    $('#noti').modal('show');
+	}else{
+	    $('#modal_title').html("Oops! You've Lost this Game, Better Luck next Time!");
+	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	    $('#noti').modal('show');
+	}
+	$.ajax({
+            type: 'POST',
+            url: "set_result",
+            data: {"selected": horse_name, "winner": winner_horse_name},
+            success: function (response) {
+                if(response["msg"] == false){
+
+                }else if(response["msg"] == true){
+
+                }else{
+
+                }
+            },
+            error: function (response) {
+                console.log(response)
+            }
+    })
+}
+
+/*------------------------------------------------
+                Start Race
+    --------------------------------------------------*/
+
+function startRace(){
+    $.ajax({
+            type: 'GET',
+            url: "start_race",
+            data: {},
+            success: function (response) {
+                if(response["winner"] == false){
+
+                }else{
+                    var horse = response['horse'];
+                    var winner = response['winner'];
+                    winner_horse_name = horse
+                    if(horse == 'horse1'){
+                        $('.animation1').css("animation", 'run '+winner+'s linear forwards')
+                        $('.animation2').css("animation", 'run 35s linear forwards')
+                        $('.animation3').css("animation", 'run 38s linear forwards')
+                    }else if(horse == 'horse2'){
+                        $('.animation2').css("animation", 'run '+winner+'s linear forwards')
+                        $('.animation3').css("animation", 'run 35s linear forwards')
+                        $('.animation1').css("animation", 'run 37s linear forwards')
+                    }else{
+                        $('.animation3').css("animation", 'run '+winner+'s linear forwards')
+                        $('.animation1').css("animation", 'run 40s linear forwards')
+                        $('.animation2').css("animation", 'run 32s linear forwards')
+                    }
+                }
+            },
+            error: function (response) {
+                console.log(response)
+            }
+    })
 }

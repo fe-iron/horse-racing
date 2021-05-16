@@ -260,13 +260,15 @@ function join_race(horse_name){
             success: function (response) {
                 if(response["msg"] == false){
                     $('#modal_title').html("Sorry something went wrong, try again!");
-                    $('#modal_title').style("color", "red");
+                    $('#modal_title').css("color", "red");
                 }else if(response["msg"] == true){
                     $('#modal_title').html("You've joined successfully!");
-                    $('#modal_title').style("color", "green");
+                    $('#wallet_bal').html(response['bal']);
+                    $('.hide').css('display', 'none');
+                    $('#modal_title').css("color", "green");
                 }else{
                     $('#modal_title').html(response["msg"]);
-                    $('#modal_title').style("color", "orange");
+                    $('#modal_title').css("color", "orange");
                 }
                 $('.imagepreview').attr('src', $(this).find('img').attr('src'));
 			    $('#join_game').modal('hide');
