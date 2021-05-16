@@ -1,11 +1,153 @@
-{% extends 'base.html' %}
 {% load static %}
-{% block link %}
-<link rel="stylesheet" href="{% static 'assets/css/custom-styles.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/countdown.css' %}">
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Horse Racing - Betting</title>
+	<!-- favicon -->
+	<link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" type="image/x-icon">
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+	<!-- Plugin css -->
+	<link rel="stylesheet" href="{% static 'assets/css/plugin.css' %}">
 
-{% block main_body %}
+	<!-- stylesheet -->
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+	<!-- responsive -->
+	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/custom-styles.css' %}">
+	<link rel="stylesheet" href="{% static 'assets/css/countdown.css' %}">
+</head>
+<body>
+
+
+    <!-- preloader area start -->
+	<div class="preloader" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+	<!-- preloader area end -->
+
+   	<!-- Header Area Start  -->
+	<header class="header">
+		<!-- Top Header Area Start -->
+		<section class="top-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="content">
+							<div class="left-content">
+								<ul class="left-list">
+									<li>
+										<p>
+											<i class="fas fa-headset"></i>	Support
+										</p>
+									</li>
+									<li>
+										<p>
+											<i class="fas fa-envelope"></i>	info@horse-racing.com
+										</p>
+									</li>
+									<li>
+										<div class="language-selector">
+											<select name="language" class="language">
+												<option value="1">English</option>
+												<!-- <option value="2">France</option>
+												<option value="3">Japan</option> -->
+											</select>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="right-content">
+								<ul class="right-list">
+									<li>
+										{% if user.is_authenticated %}
+										<a class="sign-in">
+											<i class="fas fa-user"></i> Hii, {{user.first_name}}
+										{% else %}
+										<a href="login" class="sign-in">
+											<i class="fas fa-user"></i> Sign In
+										{% endif %}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Top Header Area End -->
+		<!--Main-Menu Area Start-->
+		<div class="mainmenu-area">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<nav class="navbar navbar-expand-lg navbar-light">
+							<a class="navbar-brand" href="/">
+								<img src="{% static 'assets/images/logo.png' %}" alt="">
+							</a>
+							<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_menu" aria-controls="main_menu"
+								aria-expanded="false" aria-label="Toggle navigation">
+								<span class="navbar-toggler-icon"></span>
+							</button>
+							<div class="collapse navbar-collapse fixed-height" id="main_menu">
+								<ul class="navbar-nav ml-auto">
+									<li class="nav-item dropdown">
+										<a class="nav-link {{home}}" href="/"  role="button">
+											Home
+										<div class="mr-hover-effect"></div>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {{play}}" href="play">Play
+												<div class="mr-hover-effect"></div></a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {{lottery}}" href="lottery">lottery <small>beta</small>
+												<div class="mr-hover-effect"></div></a>
+									</li>
+									<li class="nav-item dropdown">
+										<a class="nav-link dropdown-toggle {{other}}" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true"
+											aria-expanded="false">
+											Other
+											<div class="mr-hover-effect"></div>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a class="dropdown-item" href="notfound"> <i class="fa fa-angle-double-right"></i>About</a></li>
+											<li><a class="dropdown-item" href="affiliate"> <i class="fa fa-angle-double-right"></i>Affiliate</a></li>
+											<li><a class="dropdown-item" href="faq"> <i class="fa fa-angle-double-right"></i>Faq</a></li>
+											<li><a class="dropdown-item" href="how-it-work"> <i class="fa fa-angle-double-right"></i>How It Work</a></li>
+											<li><a class="dropdown-item" href="terms-conditions"> <i class="fa fa-angle-double-right"></i>Terms & Condition</a></li>
+											<li><a class="dropdown-item" href="terms-conditions-details"> <i class="fa fa-angle-double-right"></i>Condition Details</a></li>
+										</ul>
+									</li>
+									<li class="nav-item">
+											<a class="nav-link {{contact}}" href="contact">Contact
+												<div class="mr-hover-effect"></div>
+											</a>
+									</li>
+								</ul>
+								{% if user.is_authenticated %}
+								<a href="logout" class="mybtn1"> Logout</a>
+								{% else %}
+								<a href="signup" class="mybtn1"> Join us</a>
+								{% endif %}
+							</div>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Main-Menu Area Start-->
+	</header>
+	<!-- Header Area End  -->
 
 <!-- Breadcrumb Area Start -->
 <section class="breadcrumb-area bc-tournaments">
@@ -67,13 +209,13 @@
 <section class="balance-and-race-no">
 	<div class="race-no">
 		<h3>Available Point</h3>
-		<h4>&#8377; {{bal}}  &nbsp <button class="mybtn1" data-target="#add_point" data-toggle="modal">Add Point</button></h4>
+		<h4>&#8377; <span>{{bal}}</span>  &nbsp <button class="mybtn1" data-target="#add_point" data-toggle="modal">Add Point</button></h4>
 
 	</div>
 
 	<div class="balance">
 		<h3>Available Balance</h3>
-		<h4>&#8377 108</h4>
+		<h4>&#8377 0</h4>
 	</div>
 </section>
 {% endif %}
@@ -369,7 +511,201 @@
 		</div>
 <!-- notification area End -->
 
-{% block jslink %}
+	<!-- Footer Area Start -->
+	<footer class="footer" id="footer">
+		<div class="subscribe-area">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="subscribe-box">
+								<form action="#">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="heading-area">
+											<h5 class="sub-title">
+													subscribe to Dooplo
+											</h5>
+											<h4 class="title">
+													To Get Exclusive Benefits
+											</h4>
+									</div>
+								</div>
+								<div class="col-lg-3 col-4 d-flex align-self-center">
+									<div class="icon">
+										<img src="{% static 'assets/images/mail-box.png' %}" alt="">
+									</div>
+								</div>
+								<div class="col-lg-6 col-8 d-flex align-self-center">
+									<div class="form-area">
+											<input type="text" placeholder="Your Email Address">
+									</div>
+								</div>
+								<div class="col-lg-3 d-flex align-self-center">
+									<div class="button-area">
+										<button class="mybtn1" type="submit">Subscribe
+											<span><i class="fas fa-paper-plane"></i></span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3">
+					<div class="footer-widget info-link-widget">
+						<h4 class="title">
+							About
+						</h4>
+						<ul class="link-list">
+							<li>
+								<a href="notfound">
+									<i class="fas fa-angle-double-right"></i>	About Us
+								</a>
+							</li>
+							<li>
+								<a href="contact">
+									<i class="fas fa-angle-double-right"></i>	Contact Us
+								</a>
+							</li>
+
+							<li>
+								<a href="#">
+									<i class="fas fa-angle-double-right"></i>	Customer Reviews
+								</a>
+							</li>
+							<li>
+								<a href="terms-conditions">
+									<i class="fas fa-angle-double-right"></i>	Privacy Policy
+
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="footer-widget info-link-widget">
+						<h4 class="title">
+							My Account
+						</h4>
+						<ul class="link-list">
+							<li>
+								<a href="login">
+									<i class="fas fa-angle-double-right"></i> Manage Your Account
+								</a>
+							</li>
+							<li>
+								<a href="faq">
+									<i class="fas fa-angle-double-right"></i> How to Deposit
+								</a>
+							</li>
+							<li>
+								<a href="faq">
+									<i class="fas fa-angle-double-right"></i> How to Withdraw
+								</a>
+							</li>
+							<li>
+								<a href="faq">
+									<i class="fas fa-angle-double-right"></i> Account Varification
+								</a>
+							</li>
+							<li>
+								<a href="faq">
+									<i class="fas fa-angle-double-right"></i> Safety & Security
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="footer-widget info-link-widget">
+						<h4 class="title">
+							help center
+						</h4>
+						<ul class="link-list">
+							<li>
+								<a href="faq">
+									<i class="fas fa-angle-double-right"></i>FAQ
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<div class="footer-widget info-link-widget">
+						<h4 class="title">
+							Legal Info
+						</h4>
+						<ul class="link-list">
+							<li>
+								<a href="#">
+									<i class="fas fa-angle-double-right"></i>Risk Warnings
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fas fa-angle-double-right"></i>Privacy Notice
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fas fa-angle-double-right"></i>Security
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="fas fa-angle-double-right"></i>Terms of Service
+								</a>
+							</li>
+							<li>
+								<a href="affliate">
+									<i class="fas fa-angle-double-right"></i>Become Affiliate
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copy-bg">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-5">
+						<div class="left-area">
+							<p>Copyright © 2021.All Rights Reserved By <a href="/">Dooplo</a>
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer Area End -->
+
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- jquery -->
+	<script src="{% static 'assets/js/jquery.js' %}"></script>
+	<!-- popper -->
+	<script src="{% static 'assets/js/popper.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<!-- plugin js-->
+	<script src="{% static 'assets/js/plugin.js' %}"></script>
+
+	<!-- MpusemoverParallax JS-->
+	<script src="{% static 'assets/js/TweenMax.js' %}"></script>
+	<script src="{% static 'assets/js/mousemoveparallax.js' %}"></script>
+	<!-- main -->
+	<script src="{% static 'assets/js/main.js' %}"></script>
 <script>
 	var horse_image = '{% static "assets/images/game/stopped-horse.png" %}';
 	var horse_gif = '{% static "assets/images/game/horse.gif" %}';
@@ -377,7 +713,6 @@
 <script src="{% static 'assets/js/timer.js' %}"></script>
 <script src="{% static 'assets/js/countdown.js' %}"></script>
 <script src="{% static 'assets/js/celebrate.js' %}"></script>
-
 <script type="text/javascript">
 	var clock = $('.clock').FlipClock(99000 * 24 * 3, {
 		clockFace: 'DailyCounter',
@@ -393,6 +728,5 @@
 		alert('{{msg}}');
 	{% endfor %}
 </script>
-{% endblock %}
-
-{% endblock %}
+</body>
+</html>
