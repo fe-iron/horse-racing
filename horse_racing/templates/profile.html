@@ -68,28 +68,39 @@
 						<div class="tab-pane fade show active" id="pdetails" role="tabpanel" aria-labelledby="pdetails-tab">
 						<div class="responsive-table">
 								<table class="table">
+									{% for usr in user %}
 									<thead>
 										<tr>
-											<th scope="row"> Full Name</th>
-											<th scope="row">Mobile Number</th>
-											<th scope="row">Available Point</th>
-											<th scope="row">Win Point</th>
-											<th scope="row">Referral</th>
-										</tr>
-									</thead>
-									<tbody>
-									{% for usr in user %}
-										<tr>
+											<th scope="col"> Full Name</th>
 											<td>
 												{{usr.full_name}}
 											</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="col">Mobile Number</th>
 											<td>
 												+91 {{usr.phone_number}}
 											</td>
+											
+											
+											
+										</tr>
+										<tr>
+											
+											<th scope="col">Available Point</th>
 											<td>
 												&#8377 {{usr.balance}}
 											</td>
+											
+										</tr>
+										<tr>
+											<th scope="col">Win Point</th>
 											<td>&#8377 	{{usr.win_balance}}</td>
+										</tr>
+										<tr>
+											<th scope="col">Referral</th>
 											<td>{{usr.referral}}</td>
 										</tr>
 									{% endfor %}
@@ -99,7 +110,7 @@
 						</div>
 
 						<div class="tab-pane fade" id="banking" role="tabpanel" aria-labelledby="banking-tab">
-							<div class="responsive-table">
+							<div class="responsive-table transaction-table">
 								<table class="table">
 									<thead>
 										<tr>
@@ -127,7 +138,6 @@
 												{{tran.bank_txn_id}}
 											</td>
 											<td>{{tran.status}}</td>
-											<td>&#8377 {{tran.made_by.amount}}</td>
 											<td>&#8377 {{tran.made_by.amount}}</td>
 											<td>
 												{{tran.gateway_name}}
