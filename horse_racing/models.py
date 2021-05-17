@@ -114,3 +114,15 @@ class Subscriber(models.Model):
 
     def __str__(self):
         return self.contact
+
+
+class CommissionHistory(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
+    amount = models.IntegerField()
+    you_got = models.CharField(max_length=50)
+    which_horse = models.CharField(max_length=20)
+    referred_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="referred_history", default=None, null=True)
+    user = models.ForeignKey(Registration, on_delete=models.CASCADE, related_name="registration_history", default=None, null=True)
+
+    def __str__(self):
+        return self.which_horse

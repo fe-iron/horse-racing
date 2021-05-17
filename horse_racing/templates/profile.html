@@ -192,25 +192,35 @@
 										<tr>
 											<th scope="row">Time Stamp</th>
 											<th scope="row">Referral Code</th>
-											<th scope="row">Joined</th>
-											<th scope="row">Total Income</th>
+											<th scope="row">You Got</th>
+											<th scope="row">Total Amount</th>
+											<th scope="row">Horse Color</th>
+											<th scope="row">Referred User</th>
 										</tr>
 									</thead>
 									<tbody>
+									{% for ref in referred %}
 										<tr>
 											<td>
-
+												{{ref.timestamp}}
 											</td>
 											<td>
-
+												{{ref.user.referral}}
 											</td>
 											<td>
-
+												{{ref.you_got}}
 											</td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td>
+												{{ref.amount}}
+											</td>
+											<td>
+												{{ref.which_horse}}
+											</td>
+											<td>
+												{{ref.referred_user}}
+											</td>
 										</tr>
+									{% endfor %}
 									</tbody>
 								</table>
 							</div>

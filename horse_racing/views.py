@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from .paytm_checksum import generate_checksum, verify_checksum
 from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing, GamePointHistory, GamePlayHistory, \
-    Subscriber, Referral
+    Subscriber, Referral, CommissionHistory
 
 
 time_left = datetime.datetime.now() + datetime.timedelta(minutes=4)
@@ -183,7 +183,7 @@ def referral(request):
 
         characters = lower_alphabet + upper_alphabet + hex_digits + digits
         referral = ''
-        for i in range(11):
+        for i in range(10):
             referral += random.choice(characters)
 
         ref = Referral(referral=referral, created_by=user)
@@ -418,6 +418,28 @@ def set_result(request):
                                        player=user, total_bet=total_betting)
         game_history.save()
 
+        # setting referral bonus
+        if player.result == 'Win':
+            reff = reg_user.referral
+            if reff == 'DDEFAULT000':
+                pass
+            else:
+                if Referral.objects.filter(assign_to=user).exists():
+                    reff = Referral.objects.get(assign_to=user)
+                    awarde_user = reff.created_by
+                    awarde_user = User.objects.filter(username=user)[0]
+                    awarde_user = Registration.objects.filter(user=awarde_user)[0]
+                    commission = float(100) * (10.0 / float(amount))  # user's commission
+                    w_bal = float(awarde_user.win_balance)
+                    w_bal += commission
+                    commission = str(w_bal)
+                    awarde_user.win_balance = commission
+                    awarde_user.save()
+                    # setting history
+                    com_history = CommissionHistory(amount=player.amount, you_got=commission, which_horse=selected,
+                                                    referred_user=user, user=awarde_user)
+                    com_history.save()
+
         return JsonResponse({"result": True}, status=200)
     return JsonResponse({"result": False}, status=200)
 
@@ -429,11 +451,13 @@ def profile(request):
     transaction = TransactionDetail.objects.filter(user=user)
     wal = GamePointHistory.objects.filter(made_by=user).order_by('-date', '-time')
     user = Registration.objects.filter(user=user)
+    ref = CommissionHistory.objects.filter(user=user[0]).order_by('-timestamp')
     param = {
         'user': user,
         "game_his": game_his,
         "wallet": wal,
         "transaction": transaction,
+        "referred": ref,
     }
     return render(request, "profile.html", param)
 
