@@ -15,9 +15,6 @@ horses.forEach((horse, i) => {
       var fiveMinutes = 20,
       display = document.querySelector('#time')
       startTimer(fiveMinutes, display)
-//      setTimeout(() => {
-//        location.href = 'tournaments'
-//      }, 20000)
         setResult();
     }
     horseImages[i].src = horse_image
@@ -153,36 +150,29 @@ function setCircleDasharray() {
 
 function setResult(){
 	var horse_name = $('#horse_name').val();
-
-	if(horse_name == winner_horse_name){
-	    $('#modal_title').html("Congratulations! You've won");
-	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-	    $('#noti').modal('show');
-	}else if(horse_name == winner_horse_name){
-	    $('#modal_title').html("Congratulations! You've won");
-	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-	    $('#noti').modal('show');
-	}else if(horse_name == winner_horse_name){
-	    $('#modal_title').html("Congratulations! You've won");
-	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-	    $('#noti').modal('show');
-	}else{
-	    $('#modal_title').html("Oops! You've Lost this Game, Better Luck next Time!");
-	    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
-	    $('#noti').modal('show');
-	}
 	$.ajax({
             type: 'POST',
             url: "set_result",
             data: {"selected": horse_name, "winner": winner_horse_name},
             success: function (response) {
-                if(response["msg"] == false){
-
-                }else if(response["msg"] == true){
-
+                if(response["result"] == false){
+                    $('#modal_title').html("No one played this game!, starting a new game...");
+	                $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+	                $('#noti').modal('show');
                 }else{
-
+                    if(horse_name == winner_horse_name){
+                        $('#modal_title').html("Congratulations! You've won, starting a new game...");
+                        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+                        $('#noti').modal('show');
+                    }else{
+                        $('#modal_title').html("Oops! You've Lost this Game, Better Luck next Time! starting a new game...");
+                        $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+                        $('#noti').modal('show');
+                    }
                 }
+                setTimeout(() => {
+                        location.href = 'tournaments'
+                }, 20000)
             },
             error: function (response) {
                 console.log(response)
@@ -226,3 +216,29 @@ function startRace(){
             }
     })
 }
+
+/*-----------------------------------
+        Date on tournaments page
+    ------------------------------------*/
+
+var today = new Date();
+
+var year = today.getFullYear();
+var month = today.getMonth();
+var date = today.getDate();
+var day = today.getDay();
+
+var date_with_day = '';
+
+var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+date_with_day += days[day];
+date_with_day += ', ';
+date_with_day += date;
+date_with_day += ' ';
+date_with_day += months[month];
+date_with_day += ' ';
+date_with_day += year
+
+document.getElementById('date').innerHTML = date_with_day;

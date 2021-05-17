@@ -1,6 +1,6 @@
-import time
-from datetime import date
-from .set_timer import SetTime, now_minute, now_sec
+import string
+import datetime
+import random
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib import auth, messages
@@ -10,11 +10,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from .paytm_checksum import generate_checksum, verify_checksum
-from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing, GamePointHistory, GamePlayHistory
+from .models import Registration, Transaction, TransactionDetail, Player, HorseRacing, GamePointHistory, GamePlayHistory, \
+    Subscriber, Referral
 
 
-SetTime().start()
-
+time_left = datetime.datetime.now() + datetime.timedelta(minutes=4)
 
 # Create your views here.
 def index(request):
@@ -63,34 +63,27 @@ def tcd(request):
 
 @login_required(login_url='/login')
 def tournaments(request):
-    n_minute = int(now_minute)
-    n_sec = int(now_sec)
-    mili_sec = 1000
+    global time_left
+    now = datetime.datetime.now()
+    time_diff = str(time_left - now)
+    # print("global: ",time_left)
+    # print("now: ",time_diff)
+    if time_diff[0:5] == '-1 da':
+        time_left = datetime.datetime.now() + datetime.timedelta(minutes=4)
+        current_second = 240
+        milli_sec = 240000
+    else:
+        current_minute = time_diff[2:4]
+        current_second = time_diff[5:7]
+        if '0' in current_second:
+            current_second = current_second[1]
+        elif '0' in current_minute:
+            current_minute = current_minute[1]
 
-    t = time.localtime()
-    current_minute = int(time.strftime("%M", t))
-    current_second = int(time.strftime("%S", t))
-    print("now minute: ", now_minute)
-    print("now second: ", now_sec)
-    #
-    # if n_minute == 0:
-    #     n_minute = 60
-    # elif n_minute == 1:
-    #     n_minute = 61
-    # elif n_minute == 2:
-    #     n_minute = 62
-    # elif n_minute == 3:
-    #     n_minute = 63
-    # elif n_minute == 4:
-    #     n_minute = 64
-
-    current_minute = abs(n_minute - current_minute)
-    if n_sec < current_second:
-        current_second = n_sec
-
-    current_minute = current_minute * 60  # converting to second
-    current_second = current_second + current_minute
-    mili_sec *= current_second
+        current_second = (int(current_minute) * 60) + int(current_second)
+        milli_sec = current_second * 1000
+    # print("minute ",current_minute)
+    # print("second ",current_second)
     try:
         user = request.user
         g_no = HorseRacing.objects.latest('timestamp')
@@ -99,31 +92,41 @@ def tournaments(request):
         else:
             g_no = g_no.game_no
             g_no += 1
+            d = datetime.date.today().strftime("%Y%m%d")
+            h = str(g_no)
+            d += h
+            g_no = int(d)
             h_race = HorseRacing(game_no=g_no)
             h_race.save()
 
-
     except HorseRacing.DoesNotExist:
-        h = HorseRacing(game_no=1)
-        h.save()
         g_no = 1
+        d = datetime.date.today().strftime("%Y%m%d")
+        h = str(g_no)
+        d += h
+        g_no = int(d)
+        h = HorseRacing(game_no=g_no)
+        h.save()
 
-    d = date.today().strftime("%Y%m%d")
-    h = str(g_no)
-    d += h
     if Registration.objects.filter(user=user).exists():
         bal = Registration.objects.get(user=request.user)
         win_bal = bal.win_balance
         bal = bal.balance
 
-    print("milii : ",mili_sec, " sec: ", current_second)
+    d = str(g_no)
+    cond = ['-time']
+    all_bets = GamePlayHistory.objects.all().order_by(*cond)
+    my_bets = GamePlayHistory.objects.filter(player=user).order_by(*cond)
+
     context = {
         'play': 'active',
         "race_no": d,
         "bal": bal,
         "second_left": current_second,
-        "milli_sec_left": mili_sec,
+        "milli_sec_left": milli_sec,
         "win_bal": win_bal,
+        "all_bets": all_bets,
+        "my_bets": my_bets,
     }
     return render(request, "tournaments.html", context)
 
@@ -144,8 +147,19 @@ def signup(request):
 
             reg = Registration(referral=referral, phone_number=mob, full_name=name, user=new_user)
             reg.save()
-            # backend argument required cause we are making the ability to LOGIN by email.
-            # Remember, I only extended the User model.
+
+            if referral == "DEFAULT000":
+                pass
+            else:
+                if Referral.objects.filter(referral=referral).exists():
+                    ref = Referral.objects.get(referral=referral)
+                    ref.assign_to = new_user
+                    ref.save()
+
+                    # extra bonus
+                    reg.balance = '30'
+                    reg.save()
+
             auth.login(request, new_user)
             return redirect("tournaments")
     else:
@@ -156,8 +170,30 @@ def join(request, referral):
     return render(request, "signup.html", {"referral": referral})
 
 
+@login_required(login_url="/login")
 def referral(request):
-    pass
+    user = request.user
+    if Referral.objects.filter(created_by=user).exists():
+        referral = Referral.objects.get(created_by=user).referral
+    else:
+        lower_alphabet = list(string.ascii_lowercase)
+        upper_alphabet = list(string.ascii_uppercase)
+        hex_digits = list(string.hexdigits)
+        digits = list(string.digits)
+
+        characters = lower_alphabet + upper_alphabet + hex_digits + digits
+        referral = ''
+        for i in range(11):
+            referral += random.choice(characters)
+
+        ref = Referral(referral=referral, created_by=user)
+        ref.save()
+
+    data = 'Hey, Join with my referral link to get instant 30 rupees to Play Horse Racing and earn real money Here is ' \
+           'the direct link to get the real money '
+    referral_url = 'http://' + get_current_site(request).domain + '/join' + referral
+    data += referral_url
+    return JsonResponse({"result": referral_url, "referral": referral, "data": data}, status=200)
 
 
 def login(request):
@@ -237,7 +273,8 @@ def callback(request):
             txn_detail = TransactionDetail(made_by=txn, transaction_id=paytm_params['TXNID'],
                                            bank_txn_id=paytm_params['BANKTXNID'], currency=paytm_params['CURRENCY'],
                                            status=paytm_params['STATUS'], gateway_name=paytm_params['GATEWAYNAME'],
-                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'])
+                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'],
+                                           user=txn.made_by)
             txn_detail.save()
             messages.info(request, "Recharged Successfully! Wallet Updated")
 
@@ -252,7 +289,8 @@ def callback(request):
             txn_detail = TransactionDetail(made_by=txn, transaction_id=paytm_params['TXNID'],
                                            bank_txn_id=paytm_params['BANKTXNID'], currency=paytm_params['CURRENCY'],
                                            status=paytm_params['STATUS'], gateway_name=paytm_params['GATEWAYNAME'],
-                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'])
+                                           bank_name=paytm_params['BANKNAME'], payment_mode=paytm_params['PAYMENTMODE'],
+                                           user=txn.made_by)
             txn_detail.save()
             messages.info(request, "Recharge Unsuccessfull! Try Again")
 
@@ -346,7 +384,11 @@ def set_result(request):
 
         horse_race = HorseRacing.objects.latest('timestamp')
         user = request.user
-        player = Player.objects.filter(player=user)[0]
+        try:
+            player = Player.objects.filter(player=user, game=horse_race)[0]
+        except IndexError:
+            return JsonResponse({'result': False}, status=200)
+
         reg_user = Registration.objects.filter(user=user)[0]
         amount = player.amount
 
@@ -358,6 +400,10 @@ def set_result(request):
             horse_race.winner = 'horse3'
         horse_race.open = False
         horse_race.save()
+        total_betting = 0
+        total_betting += horse_race.horse1
+        total_betting += horse_race.horse2
+        total_betting += horse_race.horse3
 
         if winner == selected:
             player.result = 'Win'
@@ -369,8 +415,31 @@ def set_result(request):
         player.save()
 
         game_history = GamePlayHistory(amount=player.amount, which_horse=selected, result=player.result, game=horse_race,
-                                       player=player)
+                                       player=user, total_bet=total_betting)
         game_history.save()
 
         return JsonResponse({"result": True}, status=200)
     return JsonResponse({"result": False}, status=200)
+
+
+@login_required(login_url='/login')
+def profile(request):
+    user = request.user
+    game_his = GamePlayHistory.objects.filter(player=user)
+    transaction = TransactionDetail.objects.filter(user=user)
+    wal = GamePointHistory.objects.filter(made_by=user).order_by('-date', '-time')
+    user = Registration.objects.filter(user=user)
+    param = {
+        'user': user,
+        "game_his": game_his,
+        "wallet": wal,
+        "transaction": transaction,
+    }
+    return render(request, "profile.html", param)
+
+
+def subscribe(request):
+    email = request.POST['email']
+    sub = Subscriber(contact=email)
+    sub.save()
+    return redirect("/")

@@ -33,6 +33,54 @@
 	</div>
 	<!-- preloader area end -->
 
+	<header class="header">
+	<!-- Top Header Area Start -->
+		<section class="top-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="content">
+							<div class="left-content">
+								<ul class="left-list">
+									<li>
+										<p>
+											<a href="/"><i class="fas fa-headset"></i>	Home</a>
+										</p>
+									</li>
+									<li>
+										<p>
+											<i class="fas fa-envelope"></i>	info@horse-racing.com
+										</p>
+									</li>
+									<li>
+										<div class="language-selector">
+											<select name="language" class="language">
+												<option value="1">English</option>
+
+											</select>
+										</div>
+									</li>
+								</ul>
+							</div>
+							<div class="right-content">
+								<li class="">
+										{% if user.is_authenticated %}
+										<a class="sign-in" href="profile">
+											<i class="fas fa-user"></i> Hii, {{user.first_name}}
+										{% else %}
+										<a href="login" class="sign-in">
+											<i class="fas fa-user"></i> Sign In
+										{% endif %}
+										</a>
+								</li>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</header>
+
 <!-- Breadcrumb Area Start -->
 <section class="breadcrumb-area bc-tournaments">
 	<img class="bc-img" src="{% static 'assets/images/game/racing-horse.svg' %}" alt="">
@@ -208,7 +256,7 @@
 								<thead>
 									<tr>
 										<th scope="col">RACE NO.</th>
-										<th scope="col">COLOR</th>
+										<th scope="col">Horse COLOR</th>
 										<th scope="col">BET POINT</th>
 										<th scope="col">RESULT</th>
 										<th scope="col">INCOME</th>
@@ -216,34 +264,38 @@
 									</tr>
 								</thead>
 								<tbody>
+								{% for all_bet in all_bets %}
 									<tr>
 										<td>
-											20210511210
+											{{all_bet.game.game_no}}
 										</td>
 										<td>
-											<div class="color-lose"></div>
+											{% if all_bet.which_horse == 'horse1' %}
+											<div class="color-horse1"></div>
+											{% elif all_bet.which_horse == 'horse2' %}
+											<div class="color-horse2"></div>
+											{% else %}
+											<div class="color-horse3"></div>
+											{% endif %}
 										</td>
 										<td>
-											&#8377 10
+											&#8377 {{all_bet.amount}}
 										</td>
+										{% if all_bet.result == 'Lose' %}
 										<td class="lose">Lose</td>
-										<td>-10</td>
-										<td>500</td>
-									</tr>
-									<tr>
-										<td>
-											20210511209
-										</td>
-										<td>
-											<div class="color-win"></div>
-										</td>
-										<td>
-											&#8377 20
-										</td>
+										{% else %}
 										<td class="win">Win</td>
-										<td>20</td>
-										<td>300</td>
+										{% endif %}
+
+										{% if all_bet.result == 'Lose' %}
+										<td>- {{all_bet.amount}}</td>
+										{% else %}
+										<td>{{all_bet.amount}}</td>
+										{% endif %}
+
+										<td>{{all_bet.total_bet}}</td>
 									</tr>
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>
@@ -255,7 +307,7 @@
 								<thead>
 									<tr>
 										<th scope="col">RACE NO.</th>
-										<th scope="col">COLOR</th>
+										<th scope="col">Horse COLOR</th>
 										<th scope="col">BET POINT</th>
 										<th scope="col">RESULT</th>
 										<th scope="col">INCOME</th>
@@ -263,21 +315,38 @@
 									</tr>
 								</thead>
 								<tbody>
+								{% for my_bet in my_bets %}
 									<tr>
 										<td>
-											20210511210
+											{{my_bet.game.game_no}}
 										</td>
 										<td>
-											<div class="color-lose"></div>
+											{% if my_bet.which_horse == 'horse1' %}
+											<div class="color-horse1"></div>
+											{% elif my_bet.which_horse == 'horse2' %}
+											<div class="color-horse2"></div>
+											{% else %}
+											<div class="color-horse3"></div>
+											{% endif %}
 										</td>
 										<td>
-											&#8377 10
+											&#8377 {{my_bet.amount}}
 										</td>
+										{% if my_bet.result == 'Lose' %}
 										<td class="lose">Lose</td>
-										<td>-10</td>
-										<td>500</td>
-									</tr>
+										{% else %}
+										<td class="win">Win</td>
+										{% endif %}
 
+										{% if my_bet.result == 'Lose' %}
+										<td>- {{my_bet.amount}}</td>
+										{% else %}
+										<td>{{my_bet.amount}}</td>
+										{% endif %}
+
+										<td>{{my_bet.total_bet}}</td>
+									</tr>
+								{% endfor %}
 								</tbody>
 							</table>
 						</div>

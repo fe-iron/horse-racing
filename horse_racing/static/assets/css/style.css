@@ -90,6 +90,17 @@ h6 {
   color: #FFF;
   font-family: "Ubuntu", sans-serif; }
 
+#referral_url {
+    width: 100%;
+    border: 0px;
+    height: 50px;
+    font-size: 14px;
+    color: #a1aed4;
+    background: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 12px;
+}
+
 p {
   font-size: 18px;
   color: #a1aed4;

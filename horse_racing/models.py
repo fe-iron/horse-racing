@@ -8,7 +8,7 @@ class Registration(models.Model):
     phone_number = models.IntegerField(blank=True, unique=True)
     full_name = models.CharField(max_length=255, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    balance = models.CharField(max_length=50, default="20")
+    balance = models.CharField(max_length=50, default="10")
     win_balance = models.CharField(max_length=50, default='0')
 
     def __str__(self):
@@ -18,7 +18,7 @@ class Registration(models.Model):
 class Referral(models.Model):
     referral = models.CharField(max_length=10, default="DEFAULT000")
     created_on = models.DateTimeField(auto_now_add=True)
-    assign_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_for")
+    assign_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_for", null=True, default=None)
     created_by = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -44,6 +44,7 @@ class Transaction(models.Model):
 
 class TransactionDetail(models.Model):
     made_by = models.ForeignKey(Transaction, on_delete=models.CASCADE, related_name="Transaction_detail")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_detail", null=True, default=None)
     transaction_id = models.CharField(max_length=255)
     bank_txn_id = models.CharField(max_length=255)
     currency = models.CharField(max_length=10)
@@ -101,7 +102,15 @@ class GamePlayHistory(models.Model):
     which_horse = models.CharField(max_length=20)
     result = models.CharField(max_length=10, default='Lose')
     game = models.ForeignKey(HorseRacing, on_delete=models.CASCADE, related_name="horse_history", default=None, null=True)
-    player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name="player_history", default=None, null=True)
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_history", default=None, null=True)
+    total_bet = models.IntegerField(default=0)
 
     def __str__(self):
         return self.which_horse
+
+
+class Subscriber(models.Model):
+    contact = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.contact

@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_body %}
+    <!-- Breadcrumb Area Start -->
+	<section class="breadcrumb-area bc-faq">
+		<img class="bc-img" src="{% static 'assets/images/breadcrumb/faq.png' %}" alt="">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<h4 class="title">
+						Profile
+					</h4>
+					<ul class="breadcrumb-list">
+						<li>
+							<a href="/">
+									<i class="fas fa-home"></i>
+									Home
+							</a>
+						</li>
+						<li>
+							<span><i class="fas fa-chevron-right"></i> </span>
+						</li>
+						<li>
+							<a href="tournaments">Race</a>
+						</li>
+						<li>
+							<span><i class="fas fa-chevron-right"></i> </span>
+						</li>
+						<li>
+							<a href="profile">Profile</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Breadcrumb Area End -->
+
+	<!-- faq-section start -->
+	<section class="faq-section">
+		<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10">
+
+					</div>
+				</div>
+			<div class="row">
+			<div class="col-lg-12">
+				<div class="faq-wrapper">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+					<a class="nav-link active" id="pdetails-tab" data-toggle="tab" href="#pdetails" role="tab" aria-controls="ticket" aria-selected="false">Personal Details</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" id="banking-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="banking" aria-selected="false">Transaction</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" id="winning-tab" data-toggle="tab" href="#winning" role="tab" aria-controls="winning" aria-selected="false">winning</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" id="referral-tab" data-toggle="tab" href="#referral" role="tab" aria-controls="referral" aria-selected="true">Referral</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link" id="wallet-tab" data-toggle="tab" href="#wallet" role="tab" aria-controls="wallet" aria-selected="true">Wallet</a>
+					</li>
+				</ul>
+					<div class="tab-content activities" id="myTabContent">
+						<div class="tab-pane fade show active" id="pdetails" role="tabpanel" aria-labelledby="pdetails-tab">
+						<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="row"> Full Name</th>
+											<th scope="row">Mobile Number</th>
+											<th scope="row">Available Point</th>
+											<th scope="row">Win Point</th>
+											<th scope="row">Referral</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for usr in user %}
+										<tr>
+											<td>
+												{{usr.full_name}}
+											</td>
+											<td>
+												+91 {{usr.phone_number}}
+											</td>
+											<td>
+												&#8377 {{usr.balance}}
+											</td>
+											<td>&#8377 	{{usr.win_balance}}</td>
+											<td>{{usr.referral}}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="banking" role="tabpanel" aria-labelledby="banking-tab">
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="row">Time Stamp</th>
+											<th scope="row">Transaction ID</th>
+											<th scope="row">Bank Transaction ID</th>
+											<th scope="row">status</th>
+											<th scope="row">Amount</th>
+											<th scope="row">Gateway Name</th>
+											<th scope="row">Bank Name</th>
+											<th scope="row">Payment Mode</th>
+											<th scope="row">Order ID</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for tran in transaction %}
+										<tr>
+											<td>
+												{{tran.timestamp}}
+											</td>
+											<td>
+												{{tran.transaction_id}}
+											</td>
+											<td>
+												{{tran.bank_txn_id}}
+											</td>
+											<td>{{tran.status}}</td>
+											<td>&#8377 {{tran.made_by.amount}}</td>
+											<td>&#8377 {{tran.made_by.amount}}</td>
+											<td>
+												{{tran.gateway_name}}
+											</td>
+											<td>
+												{{tran.bank_name}}
+											</td>
+											<td>
+												{{tran.payment_mode}}
+											</td>
+											<td>
+												{{tran.made_by.order_id}}
+											</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="winning" role="tabpanel" aria-labelledby="winning-tab">
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="row">Date</th>
+											<th scope="row">Time</th>
+											<th scope="row">Horse Name</th>
+											<th scope="row">Amount</th>
+											<th scope="row">Result</th>
+											<th scope="row">Game Number</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for g_his in game_his %}
+										<tr>
+											<td>
+												{{g_his.date}}
+											</td>
+											<td>
+												{{g_his.time}}
+											</td>
+											<td>
+												{{g_his.which_horse}}
+											</td>
+											<td>&#8377 	{{g_his.amount}}</td>
+											<td>{{g_his.result}}</td>
+											<td>{{g_his.game.game_no}}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="referral" role="tabpanel" aria-labelledby="referral-tab">
+							<div class="referral_and_button"><button class="mybtn1" onclick="getReferral()">Get Referral</button></div>
+							<br>
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="row">Time Stamp</th>
+											<th scope="row">Referral Code</th>
+											<th scope="row">Joined</th>
+											<th scope="row">Total Income</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+
+											</td>
+											<td>
+
+											</td>
+											<td>
+
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="wallet" role="tabpanel" aria-labelledby="wallet-tab">
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="row">Date</th>
+											<th scope="row">Time</th>
+											<th scope="row">Amount</th>
+											<th scope="row">Balance</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for wal in wallet %}
+										<tr>
+											<td>
+												{{wal.date}}
+											</td>
+											<td>
+												{{wal.time}}
+											</td>
+											<td>
+												{{wal.amount}}
+											</td>
+											<td>&#8377 	{{wal.balance}}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- faq-section end -->
+<div class="modal fade login-modal" id="noti" tabindex="-1" role="dialog" aria-labelledby="noti" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<div class="modal-body">
+					<div class="logo-area">
+							<img class="logo" src="{% static 'assets/images/logo.png' %}" alt="">
+					</div>
+					<div class="header-area">
+						<h4 class="title" id="modal_title"></h4>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+{% endblock %}

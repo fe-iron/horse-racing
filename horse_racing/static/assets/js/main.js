@@ -212,32 +212,6 @@ $(function ($) {
 
 });
 
-/*-----------------------------------
-        Date on tournaments page
-    ------------------------------------*/
-
-var today = new Date();
-
-var year = today.getFullYear();
-var month = today.getMonth();
-var date = today.getDate();
-var day = today.getDay();
-
-var date_with_day = '';
-
-var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-date_with_day += days[day];
-date_with_day += ', ';
-date_with_day += date;
-date_with_day += ' ';
-date_with_day += months[month];
-date_with_day += ' ';
-date_with_day += year
-
-document.getElementById('date').innerHTML = date_with_day;
-
 /*------------------------------------------------
         setting modal for selection of horse
     --------------------------------------------------*/
@@ -260,19 +234,63 @@ function join_race(horse_name){
             success: function (response) {
                 if(response["msg"] == false){
                     $('#modal_title').html("Sorry something went wrong, try again!");
-                    $('#modal_title').css("color", "red");
                 }else if(response["msg"] == true){
                     $('#modal_title').html("You've joined successfully!");
                     $('#wallet_bal').html(response['bal']);
                     $('.hide').css('display', 'none');
-                    $('#modal_title').css("color", "green");
                 }else{
                     $('#modal_title').html(response["msg"]);
-                    $('#modal_title').css("color", "orange");
                 }
                 $('.imagepreview').attr('src', $(this).find('img').attr('src'));
 			    $('#join_game').modal('hide');
 			    $('#noti').modal('show');
+            },
+            error: function (response) {
+                console.log(response)
+            }
+    })
+}
+
+
+/*------------------------------------------------
+                Click to Copy function
+    --------------------------------------------------*/
+function copy() {
+  /* Get the text field */
+  var copyText = document.getElementById("referral_url");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+  /* Alert the copied text */
+  alert("Copied the text: " + copyText.value);
+}
+
+
+/*------------------------------------------------
+                request for referral
+    --------------------------------------------------*/
+
+function getReferral(){
+    $.ajax({
+            type: 'GET',
+            url: "referral",
+            data: {},
+            success: function (response) {
+                if(response["result"] == false){
+                    $('#modal_title').html("Sorry something went wrong, try again!");
+                    $('.imagepreview').attr('src', $(this).find('img').attr('src'));
+                    $('#noti').modal('show');
+                }else{
+                    $('.referral_and_button').html(`
+                        <input class="input-field" id="referral_url" type="text" readonly value="${response['data']}">
+                        <button class="mybtn1" onclick="copy()">Copy Referral</button>
+                    `)
+                }
             },
             error: function (response) {
                 console.log(response)

@@ -6,16 +6,21 @@
   color: green !important;
 }
 
-.color-win {
+.color-horse1 {
   width: 2em;
   height: 1em;
-  background: green;
+  background: #9a3000;
 }
 
-.color-lose {
+.color-horse2 {
   width: 2em;
   height: 1em;
-  background: red;
+  background: #005686;
+}
+.color-horse3 {
+  width: 2em;
+  height: 1em;
+  background: #c52600;
 }
 
 .horse-1 {
@@ -73,6 +78,10 @@
   100% {
     left: 91%;
   }
+}
+
+.motivation {
+    padding-top: 2em;
 }
 
 .racing-section::before {
@@ -136,6 +145,7 @@
   }
   .motivation {
     font-size: 0.7em;
+    padding-top: 2em;
   }
 }
 
@@ -165,6 +175,7 @@
   }
   .motivation {
     font-size: 0.7em;
+    padding-top: 2em;
   }
 }
 
@@ -180,7 +191,8 @@
     font-size: 0.6em;
   }
   .motivation {
-    font-size: 0.6em;
+    font-size: 0.7em;
+    padding-top: 2em;
   }
 }
 
