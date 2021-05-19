@@ -68,7 +68,7 @@
 						<div class="tab-pane fade show active" id="pdetails" role="tabpanel" aria-labelledby="pdetails-tab">
 						<div class="responsive-table">
 								<table class="table">
-									{% for usr in user %}
+									{% for usr in this_user %}
 									<thead>
 										<tr>
 											<th scope="col"> Full Name</th>
@@ -273,9 +273,9 @@
 			</div>
 		</div>
 	</section>
-
 	<!-- faq-section end -->
-<div class="modal fade login-modal" id="noti" tabindex="-1" role="dialog" aria-labelledby="noti" aria-hidden="true">
+
+	<div class="modal fade login-modal" id="noti" tabindex="-1" role="dialog" aria-labelledby="noti" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

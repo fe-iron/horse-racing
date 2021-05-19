@@ -448,7 +448,7 @@ def profile(request):
     user = Registration.objects.filter(user=user)
     ref = CommissionHistory.objects.filter(user=user[0]).order_by('-timestamp')
     param = {
-        'user': user,
+        'this_user': user,
         "game_his": game_his,
         "wallet": wal,
         "transaction": transaction,
