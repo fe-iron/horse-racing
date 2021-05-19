@@ -81,32 +81,26 @@ def tournaments(request):
             current_minute = current_minute[1]
 
         current_second = (int(current_minute) * 60) + int(current_second)
+        current_second = int(current_second)
         milli_sec = current_second * 1000
     # print("minute ",current_minute)
     # print("second ",current_second)
-    try:
-        user = request.user
-        g_no = HorseRacing.objects.latest('timestamp')
-        if g_no.open:
-            g_no = g_no.game_no
-        else:
-            g_no = g_no.game_no
-            g_no += 1
-            d = datetime.date.today().strftime("%Y%m%d")
-            h = str(g_no)
-            d += h
-            g_no = int(d)
-            h_race = HorseRacing(game_no=g_no)
-            h_race.save()
-
-    except HorseRacing.DoesNotExist:
-        g_no = 1
+    user = request.user
+    g_no = HorseRacing.objects.latest('timestamp')
+    if g_no.open:
+        g_no = g_no.game_no
+    else:
+        g_no = g_no.game_no
+        g_no = str(g_no)
+        g_no = g_no[8:]
+        g_no = int(g_no)
+        g_no += 1
         d = datetime.date.today().strftime("%Y%m%d")
         h = str(g_no)
         d += h
         g_no = int(d)
-        h = HorseRacing(game_no=g_no)
-        h.save()
+        h_race = HorseRacing(game_no=g_no)
+        h_race.save()
 
     if Registration.objects.filter(user=user).exists():
         bal = Registration.objects.get(user=request.user)
@@ -144,6 +138,7 @@ def signup(request):
         except User.DoesNotExist:
 
             new_user = User.objects.create_user(username=mob, password=password, first_name=name)
+            new_user.save()
 
             reg = Registration(referral=referral, phone_number=mob, full_name=name, user=new_user)
             reg.save()
